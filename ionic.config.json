@@ -1,0 +1,7 @@
+{
+  "name": "EventConnect",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
