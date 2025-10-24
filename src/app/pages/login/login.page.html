@@ -1,0 +1,53 @@
+<ion-content class="login-container" fullscreen="true">
+  <form [formGroup]="loginForm" (ngSubmit)="onlogin()" novalidate>
+    <ion-card>
+      <ion-card-content>
+
+        <div class="card-header">
+          <img class="logo" src="../../../assets/icon/EventConnect.logo.png" alt="Logo EventConnect" />
+          <h1>¡Bienvenid@ de nuevo!</h1>
+          <p class="subtitle">Inicia sesión para continuar</p>
+        </div>
+
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="email"
+              type="email"
+              label="Correo electrónico"
+              labelPlacement="floating"
+              placeholder="tucorreo@ejemplo.com">
+            </app-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="password"
+              type="password"
+              label="Contraseña"
+              labelPlacement="floating"
+              placeholder="••••••">
+            </app-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <app-button type="submit" color="primary" value="Iniciar sesión"></app-button>
+          </ion-col>
+        </ion-row>
+
+        <!-- Enlace registro -->
+        <ion-row class="register-row">
+          <ion-col class="ion-text-center">
+            <span>¿No tienes una cuenta? </span>
+            <a [routerLink]="['/register']">Crea una aquí</a>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>
