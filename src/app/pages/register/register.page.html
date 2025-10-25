@@ -1,0 +1,86 @@
+<ion-content class="login-container" fullscreen="true">
+  <form [formGroup]="registerForm" novalidate>
+    <ion-card>
+      <ion-card-content>
+        <div class="card-header">
+          <img
+            class="logo"
+            src="../../../assets/icon/EventConnect.logo.png"
+            alt="Logo de la app"
+          />
+          <h1>Crear cuenta</h1>
+          <p class="subtitle">Únete y comienza a conectar</p>
+        </div>
+
+        <!-- Nombre -->
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="firstName"
+              type="text"
+              label="Nombre"
+              labelPlacement="floating"
+              placeholder="Ej: Juan"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <!-- Apellido -->
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="lastName"
+              type="text"
+              label="Apellido"
+              labelPlacement="floating"
+              placeholder="Ej: Pérez"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <!-- Email -->
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="email"
+              type="email"
+              label="Correo electrónico"
+              labelPlacement="floating"
+              placeholder="Ej: correo@ejemplo.com"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <!-- Password -->
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="password"
+              type="password"
+              label="Contraseña"
+              labelPlacement="floating"
+              placeholder="****"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <app-button
+              color="primary"
+              value="Continuar"
+              (click)="doRegister()"
+            ></app-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="register-row">
+          <ion-col class="ion-text-center">
+            <span>¿Ya tienes una cuenta?</span>
+            <a [routerLink]="['/login']">Inicia sesión</a>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

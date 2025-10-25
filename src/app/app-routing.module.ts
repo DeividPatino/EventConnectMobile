@@ -10,6 +10,18 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'register2',
+    loadChildren: () => import('./pages/register2/register2.module').then( m => m.Register2PageModule)
+  },
+  {
+    path: 'register3',
+    loadChildren: () => import('./pages/register3/register3.module').then( m => m.Register3PageModule)
+  },
  
   {
     path: '**',
