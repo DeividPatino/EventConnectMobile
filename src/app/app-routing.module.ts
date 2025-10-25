@@ -15,7 +15,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'welcome',
     pathMatch: 'full'
+  },  {
+    path: 'homescreen',
+    loadChildren: () => import('./pages/homescreen/homescreen.module').then( m => m.HomescreenPageModule)
   },
+
 ];
 
 @NgModule({
