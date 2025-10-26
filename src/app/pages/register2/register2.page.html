@@ -1,0 +1,78 @@
+<ion-content class="login-container" fullscreen="true">
+  <form [formGroup]="registerForm" novalidate>
+    <ion-card>
+      <ion-card-content>
+        <div class="card-header">
+          <img
+            class="logo"
+            src="../../../assets/icon/EventConnect.logo.png"
+            alt="Logo de la app"
+          />
+          <h1>Datos personales</h1>
+          <p class="subtitle">Completa tu información</p>
+        </div>
+
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="birthDate"
+              type="date"
+              label="Fecha de nacimiento"
+              labelPlacement="floating"
+              placeholder="MM/DD/YYYY"
+              (ionBlur)="calculateAge()"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Tipo de identificación</ion-label>
+              <ion-select [formControl]="idType" placeholder="Seleccionar">
+                <ion-select-option value="cc">Cédula de ciudadanía</ion-select-option>
+                <ion-select-option value="ce">Cédula de extranjería</ion-select-option>
+                <ion-select-option value="ti">Tarjeta de identidad</ion-select-option>
+                <ion-select-option value="passport">Pasaporte</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="idNumber"
+              type="text"
+              label="Número de identificación"
+              labelPlacement="floating"
+              placeholder="Ej: 1234567890"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <app-input
+              [control]="phone"
+              type="tel"
+              label="Teléfono"
+              labelPlacement="floating"
+              placeholder="Ej: +57 300 123 4567"
+            ></app-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <app-button
+              color="primary"
+              value="Continuar"
+              (click)="goToRegister3()"
+            ></app-button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

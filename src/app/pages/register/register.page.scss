@@ -1,0 +1,79 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #ffffff 0%, #e7f0ff 100%);
+  min-height: 100vh;
+  padding: 16px;
+}
+
+ion-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  overflow: hidden;
+}
+
+ion-card-content {
+  padding: 24px;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #222;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+ion-row {
+  margin-bottom: 12px;
+}
+
+app-input {
+  width: 100%;
+}
+
+app-button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.register-row {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+.register-row span {
+  color: #333;
+}
+
+.register-row a {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 6px;
+}
+
+.register-row a:hover {
+  text-decoration: underline;
+}

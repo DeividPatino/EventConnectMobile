@@ -12,12 +12,25 @@ const routes: Routes = [
   },
  
   {
-    path: '**',
+    path: '',
     redirectTo: 'welcome',
     pathMatch: 'full'
-  },  {
+  },
+  {
     path: 'homescreen',
     loadChildren: () => import('./pages/homescreen/homescreen.module').then( m => m.HomescreenPageModule)
+  },
+   {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'register2',
+    loadChildren: () => import('./pages/register2/register2.module').then( m => m.Register2PageModule)
+  },
+  {
+    path: 'register3',
+    loadChildren: () => import('./pages/register3/register3.module').then( m => m.Register3PageModule)
   },
 
 ];

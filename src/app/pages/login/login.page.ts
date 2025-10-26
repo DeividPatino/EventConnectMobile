@@ -1,31 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Auth } from 'src/app/core/providers/auth';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: false,
+  standalone : false,
 })
 export class LoginPage implements OnInit {
-  loginForm!: FormGroup;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required]);
+  public email!: FormControl;
+  public password!: FormControl;
+  public loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private navCtrl: NavController) {}
+  public async onlogin(){
+    if (this.loginForm.invalid) {
+      console.log('⚠️ El formulario no es válido. Completa todos los campos.');
+      return;
+    }
 
-  ngOnInit() {
-    this.loginForm = this.fb.group({
+    console.log('🟢 Iniciando sesión con:', this.loginForm.value);
+
+    try {
+      await this.auth.login(this.email.value, this.password.value);
+      console.log(' Inicio de sesión exitoso,');
+    } catch (error) {
+      console.log('Error al iniciar sesión:', (error as any).message);
+    }
+  }
+
+  private initForm(){
+    this.email = new FormControl('', [Validators.email, Validators.required]);
+    this.password = new FormControl('', [Validators.required]);
+
+    this.loginForm = new FormGroup({
       email: this.email,
       password: this.password,
     });
   }
 
-  onlogin() {
-    if (this.loginForm.valid) {
-      console.log('Inicio de sesión exitoso:', this.loginForm.value);
-      this.navCtrl.navigateForward('/home');
-    }
+  constructor(private readonly auth: Auth) {
+    this.initForm();
   }
+
+  ngOnInit() {}
 }
