@@ -21,12 +21,21 @@ const routes: Routes = [
         loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
       },
       {
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+      },
+      {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full'
       }
     ]
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   }
+
 ];
 
 @NgModule({
