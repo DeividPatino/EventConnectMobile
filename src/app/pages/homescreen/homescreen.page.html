@@ -1,29 +1,22 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>EventConnect</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-searchbar></ion-searchbar>
-</ion-content>
 <ion-tabs>
+  <ion-router-outlet></ion-router-outlet>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home">
+    <ion-tab-button tab="home" [routerLink]="['/homescreen/home']">
       <ion-icon name="home"></ion-icon>
-      Home
+      <ion-label>Inicio</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="categories">
+    <ion-tab-button tab="categories" [routerLink]="['/homescreen/categories']">
       <ion-icon name="apps"></ion-icon>
-      Categories
+      <ion-label>Categorías</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="notifications">
+    <ion-tab-button tab="notifications" [routerLink]="['/homescreen/notifications']">
       <ion-icon name="notifications"></ion-icon>
-      Notifications
+      <ion-label>Notificaciones</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="user">
+    <ion-tab-button tab="user" [routerLink]="['/homescreen/user']">
       <ion-icon name="person"></ion-icon>
-      Me
+      <ion-label>Mi perfil</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

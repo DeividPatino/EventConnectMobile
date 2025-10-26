@@ -6,7 +6,26 @@ import { HomescreenPage } from './homescreen.page';
 const routes: Routes = [
   {
     path: '',
-    component: HomescreenPage
+    component: HomescreenPage,
+    children: [
+      {
+        path: 'home',
+        loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+      },
+      {
+        path: 'categories',
+        loadChildren: () => import('./categories/categories.module').then( m => m.CategoriesPageModule)
+      },
+      {
+        path: 'notifications',
+        loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+      },
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      }
+    ]
   }
 ];
 
