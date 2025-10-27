@@ -2,13 +2,18 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { FirebaseApp } from "@angular/fire/app";
 
+import { FirebaseApp } from "@angular/fire/app";
 
 
 export const environment = {
   production: false,
-  FirebaseApp_CONFIG: {
+   SUPA_BASE:{
+  supaBaseUrl: "https://rnwbmijinlfcxloobout.supabase.co",
+  supaBaseApiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJud2JtaWppbmxmY3hsb29ib3V0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzOTYwODYsImV4cCI6MjA3Njk3MjA4Nn0._jUWNdQpBYkU07Xdxl30nCQrzIC4ZTJLweZnF2jxJgc",
+  },
+
+   firebaseConfig :{
   apiKey: "AIzaSyB-o1iKVo4ZZUPBbsiskAuKBKivpmHjsPU",
   authDomain: "proyectico-2f779.firebaseapp.com",
   projectId: "proyectico-2f779",

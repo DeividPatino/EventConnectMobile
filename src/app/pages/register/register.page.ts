@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
+import { GlobalUser } from 'src/app/core/providers/global-user';
 
 @Component({
   selector: 'app-register',
@@ -15,30 +16,21 @@ export class RegisterPage implements OnInit {
   public password!: FormControl;
   public registerForm!: FormGroup;
 
-  constructor(private readonly navCtrl: NavController) {
+  constructor(
+    private readonly navCtrl: NavController,
+    private readonly globalUser: GlobalUser
+  ) {
     this.initForm();
   }
 
   ngOnInit() {}
 
-  
+ 
   private initForm() {
-    this.firstName = new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-    ]);
-    this.lastName = new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-    ]);
-    this.email = new FormControl('', [
-      Validators.required,
-      Validators.email,
-    ]);
-    this.password = new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]);
+    this.firstName = new FormControl('', [Validators.required, Validators.minLength(2)]);
+    this.lastName = new FormControl('', [Validators.required, Validators.minLength(2)]);
+    this.email = new FormControl('', [Validators.required, Validators.email]);
+    this.password = new FormControl('', [Validators.required, Validators.minLength(6)]);
 
     this.registerForm = new FormGroup({
       firstName: this.firstName,
@@ -48,24 +40,24 @@ export class RegisterPage implements OnInit {
     });
   }
 
+  
   public async doRegister() {
     if (!this.registerForm.valid) {
-      console.log('⚠️ Debes completar todos los campos correctamente.');
+      console.log(' Completa todos los campos antes de continuar');
       this.registerForm.markAllAsTouched();
-      alert('Por favor completa todos los campos antes de continuar.');
       return;
     }
 
     const { firstName, lastName, email, password } = this.registerForm.value;
 
-    console.log(' Datos del usuario:', {
-      firstName,
-      lastName,
-      email,
-      password,
-    });
+    this.globalUser.setData('firstName', firstName);
+    this.globalUser.setData('lastName', lastName);
+    this.globalUser.setData('email', email);
+    this.globalUser.setData('password', password);
 
-   
+    console.log(' Datos guardados en GlobalUser:', this.globalUser.getData());
+
+    
     this.navCtrl.navigateForward('/register2');
   }
 }

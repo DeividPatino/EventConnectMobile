@@ -4,10 +4,17 @@ import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {provideAuth,getAuth} from "@angular/fire/auth";
 import {provideFirestore,getFirestore} from "@angular/fire/firestore"
 import { environment } from 'src/environments/environment.prod';
+
+import { UpLoader } from './providers/up-loader';
+import { NativeToast } from './providers/native-toast';
+import { Query } from './providers/query';
+import { Capacitor } from '@capacitor/core';
+import { File } from './providers/file';
 import { Auth } from './providers/auth';
 
 
-const providers = [Auth];
+
+const providers = [Auth, Query, NativeToast, File, UpLoader,];
 
 @NgModule({
   declarations: [],
@@ -15,7 +22,7 @@ const providers = [Auth];
     CommonModule
   ],
   providers:[
-    provideFirebaseApp(()=>initializeApp(environment.FirebaseApp_CONFIG)),
+    provideFirebaseApp(()=>initializeApp(environment.firebaseConfig)),
     provideAuth(()=>getAuth()),
     provideFirestore(()=>getFirestore()),
     ...providers,
@@ -25,10 +32,10 @@ const providers = [Auth];
   
 })
 export class CoreModule { 
-  // constructor(private readonly filesrv:File){
-  //   if(!Capacitor.isNativePlatform()){
-  //     this.filesrv.requestpermission();
+  constructor(private readonly filesrv:File){
+    if(!Capacitor.isNativePlatform()){
+      this.filesrv.requestpermission();
 
-  //   }
-  // }
+    }
+  }
 }

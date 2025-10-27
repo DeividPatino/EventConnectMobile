@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { User } from 'src/app/interfaces/user';
+import { GlobalUser } from 'src/app/core/providers/global-user';
 
 @Component({
   selector: 'app-register2',
@@ -15,24 +15,23 @@ export class Register2Page implements OnInit {
   public idNumber!: FormControl;
   public phone!: FormControl;
   public registerForm!: FormGroup;
-  public userData!: Partial<User>;
 
-  constructor(private readonly navCtrl: NavController) {
+  public calculatedAge: number | null = null;
+
+  constructor(
+    private readonly navCtrl: NavController,
+    private readonly globalUser: GlobalUser
+  ) {
     this.initForm();
   }
 
-  ngOnInit() {
-    const savedUser = localStorage.getItem('userDataStep1');
-    if (savedUser) {
-      this.userData = JSON.parse(savedUser);
-    }
-  }
+  ngOnInit() {}
 
   private initForm() {
     this.birthDate = new FormControl('', [Validators.required]);
     this.idType = new FormControl('', [Validators.required]);
-    this.idNumber = new FormControl('', [Validators.required]);
-    this.phone = new FormControl('', [Validators.required]);
+    this.idNumber = new FormControl('', [Validators.required, Validators.minLength(5)]);
+    this.phone = new FormControl('', [Validators.required, Validators.minLength(7)]);
 
     this.registerForm = new FormGroup({
       birthDate: this.birthDate,
@@ -42,36 +41,35 @@ export class Register2Page implements OnInit {
     });
   }
 
-  public calculateAge() {
-    const birthDateValue = this.birthDate.value;
-    if (birthDateValue) {
-      const today = new Date();
-      const birthDate = new Date(birthDateValue);
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
+  public onBirthDateChange(event: any) {
+    const birthDateValue = new Date(event.detail.value);
+    const today = new Date();
+    let age = today.getFullYear() - birthDateValue.getFullYear();
+    const m = today.getMonth() - birthDateValue.getMonth();
 
-      if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && today.getDate() < birthDate.getDate())
-      ) {
-        age--;
-      }
-
-      console.log(`Edad calculada: ${age} años`);
+    if (m < 0 || (m === 0 && today.getDate() < birthDateValue.getDate())) {
+      age--;
     }
+
+    this.calculatedAge = age;
+    console.log(' Edad calculada:', age);
   }
 
-  public goToRegister3() {
+  public async doRegister2() {
     if (!this.registerForm.valid) {
-      console.warn(' Debes completar todos los campos antes de continuar.');
+      console.log(' Completa todos los campos antes de continuar');
       this.registerForm.markAllAsTouched();
       return;
     }
 
-    const dataStep2 = this.registerForm.value;
-    console.log(' Datos del usuario:', dataStep2);
+    const { birthDate, idType, idNumber, phone } = this.registerForm.value;
 
-    localStorage.setItem('userDataStep2', JSON.stringify(dataStep2));
+    this.globalUser.setData('birthDate', birthDate);
+    this.globalUser.setData('idType', idType);
+    this.globalUser.setData('idNumber', idNumber);
+    this.globalUser.setData('phone', phone);
+
+    console.log(' Datos guardados en GlobalUser:', this.globalUser.getData());
 
     this.navCtrl.navigateForward('/register3');
   }

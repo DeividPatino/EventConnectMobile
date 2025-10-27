@@ -10,17 +10,11 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
- 
-  {
-    path: '',
-    redirectTo: 'welcome',
-    pathMatch: 'full'
-  },
   {
     path: 'homescreen',
     loadChildren: () => import('./pages/homescreen/homescreen.module').then( m => m.HomescreenPageModule)
   },
-   {
+  {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
@@ -32,6 +26,12 @@ const routes: Routes = [
     path: 'register3',
     loadChildren: () => import('./pages/register3/register3.module').then( m => m.Register3PageModule)
   },
+  
+   {
+     path: '',
+     redirectTo: 'welcome',
+     pathMatch: 'full'
+   },
 
 ];
 

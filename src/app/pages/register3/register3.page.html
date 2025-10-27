@@ -1,13 +1,58 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register3</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="register-container" fullscreen="true">
+  <ion-card>
+    <ion-card-content>
+      <div class="card-header">
+        <img class="logo" src="../../../assets/icon/EventConnect.logo.png" alt="Logo de la app" />
+        <h1>Sube tus fotos</h1>
+        <p class="subtitle">Puedes subir hasta 9 fotos</p>
+      </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <!-- Input oculto -->
+      <input
+        id="fileInput"
+        type="file"
+        accept="image/*"
+        multiple
+        hidden
+        (change)="onFilesSelected($event)"
+      />
+
+      <!-- Botón para abrir selector -->
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button color="primary" (click)="triggerFileInput()">
+            <ion-icon name="camera-outline" slot="start"></ion-icon>
+            Subir fotos
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <!-- Vista previa -->
+      <ion-row>
+        <ion-col size="4" *ngFor="let photo of photos; let i = index">
+          <div class="photo-container">
+            <img [src]="photo" class="photo-preview" alt="Foto subida" />
+            <ion-button
+              color="danger"
+              size="small"
+              fill="clear"
+              class="remove-btn"
+              (click)="removePhoto(i)"
+            >
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Botón Finalizar -->
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-button expand="block" color="success" (click)="finishRegister()">
+            Finalizar registro
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -8,5 +8,5 @@ export interface User {
   phone: string;           
   password: string;           
   birthDate: string;          
-  photoURL?: string;     
+  photos: string[];     
 }

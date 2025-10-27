@@ -12,24 +12,28 @@
           <p class="subtitle">Completa tu información</p>
         </div>
 
+        
         <ion-row>
           <ion-col>
-            <app-input
-              [control]="birthDate"
-              type="date"
-              label="Fecha de nacimiento"
-              labelPlacement="floating"
-              placeholder="MM/DD/YYYY"
-              (ionBlur)="calculateAge()"
-            ></app-input>
+            <ion-item>
+              <ion-label position="floating">Fecha de nacimiento</ion-label>
+              <ion-datetime
+                presentation="date"
+                [formControl]="birthDate"
+                (ionChange)="onBirthDateChange($event)"
+              ></ion-datetime>
+            </ion-item>
+            <div *ngIf="calculatedAge !== null" class="age-info">
+              <ion-text color="medium">Tienes {{ calculatedAge }} años</ion-text>
+            </div>
           </ion-col>
         </ion-row>
 
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Tipo de identificación</ion-label>
-              <ion-select [formControl]="idType" placeholder="Seleccionar">
+              <ion-label position="floating">Tipo de documento</ion-label>
+              <ion-select [formControl]="idType" placeholder="Selecciona">
                 <ion-select-option value="cc">Cédula de ciudadanía</ion-select-option>
                 <ion-select-option value="ce">Cédula de extranjería</ion-select-option>
                 <ion-select-option value="ti">Tarjeta de identidad</ion-select-option>
@@ -39,18 +43,20 @@
           </ion-col>
         </ion-row>
 
+        
         <ion-row>
           <ion-col>
             <app-input
               [control]="idNumber"
               type="text"
-              label="Número de identificación"
+              label="Número de documento"
               labelPlacement="floating"
-              placeholder="Ej: 1234567890"
+              placeholder="Ej: 1034567890"
             ></app-input>
           </ion-col>
         </ion-row>
 
+       
         <ion-row>
           <ion-col>
             <app-input
@@ -58,20 +64,22 @@
               type="tel"
               label="Teléfono"
               labelPlacement="floating"
-              placeholder="Ej: +57 300 123 4567"
+              placeholder="Ej: +57 3001234567"
             ></app-input>
           </ion-col>
         </ion-row>
 
+        
         <ion-row>
           <ion-col>
             <app-button
               color="primary"
               value="Continuar"
-              (click)="goToRegister3()"
+              (click)="doRegister2()"
             ></app-button>
           </ion-col>
         </ion-row>
+
       </ion-card-content>
     </ion-card>
   </form>
