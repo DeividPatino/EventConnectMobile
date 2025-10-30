@@ -21,17 +21,16 @@ export class Auth {
     private globalUser: GlobalUser
   ) {}
 
-  // 🧩 Registrar usuario y guardar en Firestore
+  
   async finishRegistration() {
     try {
       const userData: User = this.globalUser.getData();
 
       if (!userData.email || !userData.password) {
-        console.error('⚠️ Email o contraseña vacíos. Completa los campos.');
+        console.error(' Email o contraseña vacíos. Completa los campos.');
         return;
       }
 
-      // 🔹 Crear usuario en Firebase Authentication
       const res = await createUserWithEmailAndPassword(
         this.authFirebase,
         userData.email,
@@ -39,9 +38,8 @@ export class Auth {
       );
 
       const uid = res.user.uid;
-      console.log('✅ Usuario registrado con UID:', uid);
+      console.log(' Usuario registrado con UID:', uid);
 
-      // 🔹 Guardar datos en Firestore
       const userRef = doc(this.firestore, `users/${uid}`);
       await setDoc(userRef, {
         uid,
@@ -54,13 +52,13 @@ export class Auth {
         phone: userData.phone,
         birthDate: userData.birthDate || '',
         photos: userData.photos || [],
+        role: 'user',
         createdAt: new Date()
       });
 
-      console.log(' Datos guardados correctamente en Firestore ');
+      console.log(' Datos guardados correctamente en Firestore');
       this.globalUser.clearData();
       this.navCtrl.navigateRoot('/login');
-
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         console.error(' Este correo ya está en uso. Usa otro.');
@@ -73,13 +71,24 @@ export class Auth {
     }
   }
 
+ 
   async login(email: string, password: string) {
     try {
+      
+      const adminEmail = 'admin.eventconnect@eve.co';
+      const adminPassword = 'Admin1234';
+
+      if (email === adminEmail && password === adminPassword) {
+        console.log(' Bienvenido Administrador');
+        this.navCtrl.navigateRoot('/admin-dashboard'); 
+        return;
+      }
+
       const res = await signInWithEmailAndPassword(this.authFirebase, email, password);
-      console.log('👋 Bienvenid@:', res.user.email);
-      this.navCtrl.navigateRoot('/home');
+      console.log(' Bienvenid@:', res.user.email);
+      this.navCtrl.navigateRoot('/homescreen');
     } catch (error: any) {
-      console.error('❌ Error al iniciar sesión:', error.message);
+      console.error(' Error al iniciar sesión:', error.message);
       throw error;
     }
   }
@@ -108,7 +117,7 @@ export class Auth {
         ...(doc.data() as User)
       }));
     } catch (error) {
-      console.error(' Error en getAll:', error);
+      console.error('❌ Error en getAll:', error);
       return;
     }
   }

@@ -1,0 +1,12 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>{{ data.firstName || data.title || 'Sin título' }}</ion-card-title>
+    <ion-card-subtitle>{{ data.lastName || data.date || '' }}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p><strong>Email:</strong> {{ data.email || 'N/A' }}</p>
+    <p><strong>Teléfono:</strong> {{ data.phone || 'N/A' }}</p>
+    <p *ngIf="data.description"><strong>Descripción:</strong> {{ data.description }}</p>
+  </ion-card-content>
+</ion-card>

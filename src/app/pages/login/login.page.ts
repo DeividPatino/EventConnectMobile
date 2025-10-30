@@ -44,10 +44,20 @@ export class LoginPage implements OnInit {
 
     try {
       await this.auth.login(this.email.value, this.password.value);
-      console.log('inicio de sesión exitoso');
-      this.navCtrl.navigateRoot('/homescreen'); 
+      console.log(' Inicio de sesión exitoso');
+
+      if (
+        this.email.value === 'admin.eventconnect@eve.co' &&
+        this.password.value === 'Admin1234'
+      ) {
+        console.log(' Redirigiendo al panel de administración...');
+        this.navCtrl.navigateRoot('/admin-dashboard');
+      } else {
+        console.log(' Redirigiendo al home screen...');
+        this.navCtrl.navigateRoot('/homescreen');
+      }
     } catch (error: any) {
-      console.log(' Error al iniciar sesión:', error.message);
+      console.log('Error al iniciar sesión:', error.message);
     }
   }
 }

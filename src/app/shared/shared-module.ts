@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './components/input/input.component';
 import { ButtonComponent } from './components/button/button.component';
+import { CardComponent } from './components/card/card.component';
 
 
 const modules = [
@@ -18,6 +19,7 @@ const modules = [
 const components = [
   InputComponent,
   ButtonComponent,
+  CardComponent
   
 ];
 

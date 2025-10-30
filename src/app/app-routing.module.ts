@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/homescreen/homescreen.module').then( m => m.HomescreenPageModule)
   },
   {
+    path: 'admin-dashboard',
+    loadChildren: () => import('./pages/admin-dashboard/admin-dashboard.module').then( m => m.AdminDashboardPageModule)
+  },
+  {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
@@ -32,6 +36,7 @@ const routes: Routes = [
      redirectTo: 'welcome',
      pathMatch: 'full'
    },
+
 
 ];
 

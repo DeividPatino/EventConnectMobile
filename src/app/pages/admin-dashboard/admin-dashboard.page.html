@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Panel de Administración</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="light" (click)="logout()">Cerrar sesión</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <h2 class="text-xl font-bold mt-2 mb-4">Usuarios Registrados ({{ users.length }})</h2>
+  <div *ngIf="users.length; else noUsers">
+    <app-card *ngFor="let user of users" [data]="user"></app-card>
+  </div>
+  <ng-template #noUsers>
+    <p>No hay usuarios registrados.</p>
+  </ng-template>
+
+  <h2 class="text-xl font-bold mt-6 mb-4">Eventos Publicados ({{ events.length }})</h2>
+  <div *ngIf="events.length; else noEvents">
+    <app-card *ngFor="let event of events" [data]="event"></app-card>
+  </div>
+  <ng-template #noEvents>
+    <p>No hay eventos publicados.</p>
+  </ng-template>
+
+</ion-content>
