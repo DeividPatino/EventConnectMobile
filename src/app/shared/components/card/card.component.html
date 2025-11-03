@@ -1,12 +1,26 @@
-<ion-card>
+<ion-card class="user-card">
+
+  <div class="image-container">
+    <img
+      [src]="data?.photos?.[0] || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+      alt="Foto del usuario"
+      class="user-photo"
+    />
+  </div>
+
+
   <ion-card-header>
-    <ion-card-title>{{ data.firstName || data.title || 'Sin título' }}</ion-card-title>
-    <ion-card-subtitle>{{ data.lastName || data.date || '' }}</ion-card-subtitle>
+    <ion-card-title>
+      {{ data?.firstName || 'Sin nombre' }} {{ data?.lastName || '' }}
+    </ion-card-title>
+    <ion-card-subtitle>{{ data?.email || 'Sin correo' }}</ion-card-subtitle>
   </ion-card-header>
 
+
   <ion-card-content>
-    <p><strong>Email:</strong> {{ data.email || 'N/A' }}</p>
-    <p><strong>Teléfono:</strong> {{ data.phone || 'N/A' }}</p>
-    <p *ngIf="data.description"><strong>Descripción:</strong> {{ data.description }}</p>
+    <p><strong>Teléfono:</strong> {{ data?.phone || 'N/A' }}</p>
+    <p><strong>Tipo de documento:</strong> {{ data?.idType || 'N/A' }}</p>
+    <p><strong>Número de documento:</strong> {{ data?.idNumber || 'N/A' }}</p>
+    <p><strong>Fecha de nacimiento:</strong> {{ data?.birthDate || 'N/A' }}</p>
   </ion-card-content>
 </ion-card>

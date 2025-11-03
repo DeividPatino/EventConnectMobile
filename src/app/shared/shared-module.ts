@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './components/input/input.component';
 import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
+import { TabComponent } from './components/tab/tab.component';
 
 
 const modules = [
@@ -19,7 +20,8 @@ const modules = [
 const components = [
   InputComponent,
   ButtonComponent,
-  CardComponent
+  CardComponent,
+  TabComponent
   
 ];
 

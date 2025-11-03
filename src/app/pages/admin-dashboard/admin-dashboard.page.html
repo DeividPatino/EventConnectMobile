@@ -1,28 +1,36 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title> Panel de Administración</ion-title>
+    <ion-title>Panel de Administración</ion-title>
     <ion-buttons slot="end">
       <ion-button color="light" (click)="logout()">Cerrar sesión</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content fullscreen class="dashboard-content">
 
-  <h2 class="text-xl font-bold mt-2 mb-4">Usuarios Registrados ({{ users.length }})</h2>
-  <div *ngIf="users.length; else noUsers">
-    <app-card *ngFor="let user of users" [data]="user"></app-card>
-  </div>
-  <ng-template #noUsers>
-    <p>No hay usuarios registrados.</p>
-  </ng-template>
+  <ng-container *ngIf="activeTab === 'users'">
+    <h2 class="section-title">Usuarios Registrados ({{ users.length }})</h2>
+    <div *ngIf="users.length; else noUsers" class="cards-container">
+      <app-card *ngFor="let user of users" [data]="user"></app-card>
+    </div>
+    <ng-template #noUsers>
+      <p>No hay usuarios registrados.</p>
+    </ng-template>
+  </ng-container>
 
-  <h2 class="text-xl font-bold mt-6 mb-4">Eventos Publicados ({{ events.length }})</h2>
-  <div *ngIf="events.length; else noEvents">
-    <app-card *ngFor="let event of events" [data]="event"></app-card>
-  </div>
-  <ng-template #noEvents>
-    <p>No hay eventos publicados.</p>
-  </ng-template>
+  <ng-container *ngIf="activeTab === 'events'">
+    <h2 class="section-title">Eventos Publicados ({{ events.length }})</h2>
+    <div *ngIf="events.length; else noEvents" class="cards-container">
+      <app-card *ngFor="let event of events" [data]="event"></app-card>
+    </div>
+    <ng-template #noEvents>
+      <p>No hay eventos publicados.</p>
+    </ng-template>
+  </ng-container>
 
 </ion-content>
+
+<ion-footer>
+  <app-tab [activeTab]="activeTab" (tabChange)="onTabChange($event)"></app-tab>
+</ion-footer>

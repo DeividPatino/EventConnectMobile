@@ -1,0 +1,16 @@
+<ion-tab-bar class="custom-tab-bar">
+  <ion-tab-button (click)="selectTab('users')" [class.active]="activeTab === 'users'">
+    <ion-icon name="people-outline"></ion-icon>
+    <ion-label>Usuarios</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button (click)="selectTab('events')" [class.active]="activeTab === 'events'">
+    <ion-icon name="calendar-outline"></ion-icon>
+    <ion-label>Eventos</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button (click)="logout()">
+    <ion-icon name="log-out-outline"></ion-icon>
+    <ion-label>Salir</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>

@@ -9,13 +9,14 @@ import { WelcomePageRoutingModule } from './welcome-routing.module';
 import { WelcomePage } from './welcome.page';
 import { SharedModule } from 'src/app/shared/shared-module';
 
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     WelcomePageRoutingModule,
-    SharedModule,
+    SharedModule
   ],
   declarations: [WelcomePage]
 })
