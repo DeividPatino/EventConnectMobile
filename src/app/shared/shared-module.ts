@@ -7,6 +7,7 @@ import { InputComponent } from './components/input/input.component';
 import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
 import { TabComponent } from './components/tab/tab.component';
+import { HeaderComponent } from './components/header/header.component';
 
 
 const modules = [
@@ -21,7 +22,8 @@ const components = [
   InputComponent,
   ButtonComponent,
   CardComponent,
-  TabComponent
+  TabComponent,
+  HeaderComponent
   
 ];
 

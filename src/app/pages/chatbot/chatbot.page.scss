@@ -1,0 +1,110 @@
+.chat-item {
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --background: transparent;
+
+  &.bot {
+    --background: transparent;
+  }
+}
+
+.text-box-item {
+  --border-radius: 15px;
+  --background: var(--ion-color-light);
+}
+
+.chat-icon {
+  font-size: 23px;
+}
+
+ion-badge {
+  padding: 15px;
+}
+
+.w-space {
+  white-space: pre-line;
+}
+
+.submit-icon {
+  font-size: 25px;
+}
+
+/* Fondo principal del chat */
+ion-content {
+  --background: #ffffff !important;
+}
+
+/* Zona del footer */
+ion-footer {
+  background: #ffffff;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.08);
+  padding: 10px 15px;
+}
+
+/* Caja del input */
+.text-box-item {
+  --background: #f9f9f9; /* blanco humo */
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  --inner-border-width: 0px !important; /* 🔥 quita línea negra */
+  --inner-box-shadow: none !important;
+  --border-color: transparent !important;
+  --highlight-background: transparent !important;
+}
+
+/* Efecto al enfocar el input */
+.text-box-item:focus-within {
+  --background: #ffffff;
+  border-color: #f77f00;
+  box-shadow: 0 0 6px rgba(247, 127, 0, 0.4);
+  --inner-border-width: 0 !important;
+}
+
+/* Área de texto dentro del input */
+ion-textarea {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Botón de enviar */
+ion-button[type="submit"] {
+  --background: linear-gradient(90deg, #E63946, #F77F00, #FFB703);
+  --color: #fff;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  margin-left: 8px;
+  transition: transform 0.25s ease;
+}
+
+/* Efecto hover del botón de enviar */
+ion-button[type="submit"]:hover {
+  transform: scale(1.05);
+}
+
+/* Icono dentro del botón */
+.submit-icon {
+  font-size: 22px;
+}
+
+.empty {
+  text-align: center;
+  padding-top: 30vh;
+  opacity: 30%;
+
+  ion-icon {
+    width: 210px;
+    height: 200px;
+    background: url('/assets/icon/logo.png') no-repeat center center; /* ✅ ruta corregida */
+    background-size: 220px; /* ajusta el tamaño del logo */
+    opacity: 0.5;
+    font-size: 120px;
+  }
+}
