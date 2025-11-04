@@ -27,7 +27,11 @@ export class ChatbotPage implements OnInit {
   ngOnInit() {}
 
   private initForm() {
-    this.promt = new FormControl('', [Validators.required, CustomValidators.noWhiteSpace]);
+    this.promt = new FormControl('', [
+      Validators.required,
+      CustomValidators.noWhiteSpace,
+    ]);
+
     this.formChat = new FormGroup({
       promt: this.promt,
     });
@@ -36,13 +40,13 @@ export class ChatbotPage implements OnInit {
   askToGpt() {
     if (!this.formChat.valid) return;
 
-    const prompt = this.formChat.value.promt as string;
+    const prompt = this.formChat.value.promt.trim();
 
     // Mensaje del usuario
     const userMsg: IMessage = { sender: 'user', content: prompt };
     this.messages.push(userMsg);
 
-    // Mensaje del bot (vacío mientras carga)
+    // Mensaje del bot (vacío al inicio)
     const botMsg: IMessage = { sender: 'bot', content: '' };
     this.messages.push(botMsg);
 
@@ -56,10 +60,12 @@ export class ChatbotPage implements OnInit {
         this.loading = false;
         this.formChat.enable();
 
-        // ⚠️ Verificar estructura de respuesta OpenAI
+        // 🔍 Verifica estructura de la respuesta OpenAI
         const text =
           res?.choices?.[0]?.message?.content?.trim() ||
+          res?.bot ||
           'No se recibió respuesta del modelo.';
+
         this.typeText(text);
       },
       error: (err) => {
@@ -90,7 +96,9 @@ export class ChatbotPage implements OnInit {
 
   scrollDown() {
     setTimeout(() => {
-      this.content.scrollToBottom(500);
+      if (this.content) {
+        this.content.scrollToBottom(400);
+      }
     }, 100);
   }
 }
