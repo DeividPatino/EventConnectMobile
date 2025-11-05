@@ -1,0 +1,62 @@
+<app-header></app-header>
+
+<ion-content [scrollEvents]="true" fullscreen>
+
+  <!-- 🟢 Vista vacía cuando no hay mensajes -->
+  <div class="empty" *ngIf="!messages.length">
+    <img src="../../../assets/icon/logo.png" alt="App logo" class="logo-empty" />
+    <h4>Consulta algo...</h4>
+  </div>
+
+  <!-- 💬 Mensajes -->
+  <ion-item
+    *ngFor="let item of messages; index as i"
+    [ngClass]="{'bot': item.sender !== 'user', 'user': item.sender === 'user'}"
+    lines="none"
+    class="chat-item"
+  >
+    <ion-badge
+      slot="start"
+      [color]="item.sender === 'user' ? 'success' : 'tertiary'"
+      mode="ios"
+    >
+      <ion-icon
+        class="chat-icon"
+        [src]="item.sender === 'user'
+          ? '../../../assets/icon/user.svg'
+          : '../../../assets/icon/bot.svg'"
+      ></ion-icon>
+    </ion-badge>
+
+    <ion-label class="ion-text-wrap">
+      <p class="w-space">{{ item.content }}</p>
+
+      <!-- Spinner cuando carga -->
+      <ion-spinner
+        *ngIf="loading && (i + 1 === messages.length)"
+        color="tertiary"
+        name="dots"
+      ></ion-spinner>
+    </ion-label>
+  </ion-item>
+
+</ion-content>
+
+<!-- 📝 Campo de texto inferior -->
+<ion-footer class="ion-padding">
+  <form [formGroup]="formChat" (ngSubmit)="askToGpt()" (keyup.enter)="askToGpt()">
+    <ion-item class="text-box-item">
+      <ion-textarea
+        formControlName="promt"
+        autoGrow="true"
+        placeholder="Consulta algo..."
+      ></ion-textarea>
+
+      <ion-buttons slot="end">
+        <ion-button color="tertiary" type="submit" [disabled]="loading || formChat.invalid">
+          <ion-icon class="submit-icon" name="send"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </form>
+</ion-footer>

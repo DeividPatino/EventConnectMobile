@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/homescreen/homescreen.module').then( m => m.HomescreenPageModule)
   },
   {
+    path: 'chatbot',
+    loadChildren: () => import('./pages/chatbot/chatbot.module').then( m => m.ChatbotPageModule)
+  },
+  {
     path: 'admin-dashboard',
     loadChildren: () => import('./pages/admin-dashboard/admin-dashboard.module').then( m => m.AdminDashboardPageModule)
   },
@@ -36,6 +40,7 @@ const routes: Routes = [
      redirectTo: 'welcome',
      pathMatch: 'full'
    },
+
 
 
 ];

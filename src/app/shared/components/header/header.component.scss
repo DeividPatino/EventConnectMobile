@@ -1,0 +1,48 @@
+ion-header,
+ion-toolbar {
+  --background: linear-gradient(90deg, #E63946, #F77F00, #FFB703);
+  --color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 60px;
+  padding-left: 8px;
+}
+
+/* Botón redondo limpio */
+.back-btn {
+  --background: transparent;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease-in-out;
+}
+
+/* Icono */
+.back-btn ion-icon {
+  font-size: 22px;
+  color: #fff;
+}
+
+/* Efecto hover */
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Modo oscuro */
+:host-context(body.dark) ion-header,
+:host-context(.dark-theme) ion-header {
+  background: linear-gradient(90deg, #6A4C93, #023E8A);
+}

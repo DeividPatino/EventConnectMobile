@@ -4,13 +4,15 @@ import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {provideAuth,getAuth} from "@angular/fire/auth";
 import {provideFirestore,getFirestore} from "@angular/fire/firestore"
 import { environment } from 'src/environments/environment.prod';
-
 import { UpLoader } from './providers/up-loader';
 import { NativeToast } from './providers/native-toast';
 import { Query } from './providers/query';
 import { Capacitor } from '@capacitor/core';
 import { File } from './providers/file';
 import { Auth } from './providers/auth';
+
+
+
 
 
 

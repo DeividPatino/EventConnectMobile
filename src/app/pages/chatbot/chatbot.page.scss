@@ -1,0 +1,60 @@
+ion-content {
+  --background: #f4f4f4;
+  padding: 10px;
+}
+
+.empty {
+  text-align: center;
+  margin-top: 30%;
+  color: #666;
+}
+
+.logo-empty {
+  width: 120px;
+  height: 120px;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+
+.chat-item {
+  --min-height: 50px;
+  border-radius: 15px;
+  margin: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 5px 10px;
+}
+
+.chat-item.user {
+  justify-content: flex-end;
+  background: #dcf8c6;
+}
+
+.chat-item.bot {
+  background: #e5e5ea;
+}
+
+.chat-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.w-space {
+  white-space: pre-wrap;
+  font-size: 15px;
+}
+
+ion-footer {
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.text-box-item {
+  --background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submit-icon {
+  font-size: 20px;
+}
