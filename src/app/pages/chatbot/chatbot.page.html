@@ -1,60 +1,32 @@
 <app-header></app-header>
 
 <ion-content [scrollEvents]="true" fullscreen>
-
-  <!-- 🟢 Vista vacía cuando no hay mensajes -->
-  <div class="empty" *ngIf="!messages.length">
-    <img src="../../../assets/icon/logo.png" alt="App logo" class="logo-empty" />
-    <h4>Consulta algo...</h4>
+  <div class="chat-title">
+    <h4>Chatbot EventConnect</h4>
   </div>
 
-  <!-- 💬 Mensajes -->
-  <ion-item
-    *ngFor="let item of messages; index as i"
-    [ngClass]="{'bot': item.sender !== 'user', 'user': item.sender === 'user'}"
-    lines="none"
-    class="chat-item"
-  >
-    <ion-badge
-      slot="start"
-      [color]="item.sender === 'user' ? 'success' : 'tertiary'"
-      mode="ios"
-    >
-      <ion-icon
-        class="chat-icon"
-        [src]="item.sender === 'user'
-          ? '../../../assets/icon/user.svg'
-          : '../../../assets/icon/bot.svg'"
-      ></ion-icon>
-    </ion-badge>
+  <ion-item *ngFor="let item of messages" 
+            [ngClass]="{'user': item.sender==='user','bot':item.sender==='bot'}" 
+            lines="none" 
+            class="chat-item">
+    
+    <div class="chat-avatar">
+      <img [src]="item.sender==='user'? user.photos[0] : 'assets/icon/bot.png'" alt="avatar">
+    </div>
 
     <ion-label class="ion-text-wrap">
-      <p class="w-space">{{ item.content }}</p>
-
-      <!-- Spinner cuando carga -->
-      <ion-spinner
-        *ngIf="loading && (i + 1 === messages.length)"
-        color="tertiary"
-        name="dots"
-      ></ion-spinner>
+      <p class="w-space">{{item.content}}</p>
     </ion-label>
   </ion-item>
-
 </ion-content>
 
-<!-- 📝 Campo de texto inferior -->
 <ion-footer class="ion-padding">
-  <form [formGroup]="formChat" (ngSubmit)="askToGpt()" (keyup.enter)="askToGpt()">
+  <form [formGroup]="formChat" (ngSubmit)="askToGpt()">
     <ion-item class="text-box-item">
-      <ion-textarea
-        formControlName="promt"
-        autoGrow="true"
-        placeholder="Consulta algo..."
-      ></ion-textarea>
-
+      <ion-textarea formControlName="promt" placeholder="Escribe tu mensaje..." autoGrow="true"></ion-textarea>
       <ion-buttons slot="end">
-        <ion-button color="tertiary" type="submit" [disabled]="loading || formChat.invalid">
-          <ion-icon class="submit-icon" name="send"></ion-icon>
+        <ion-button type="submit" [disabled]="loading || formChat.invalid">
+          <ion-icon name="send"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-item>

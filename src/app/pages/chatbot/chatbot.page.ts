@@ -4,6 +4,9 @@ import { IonContent } from '@ionic/angular';
 import { IMessage } from 'src/app/interfaces/message';
 import { Openai } from 'src/app/shared/services/openai';
 import { CustomValidators } from 'src/app/shared/services/validators/custom-validators';
+import { User } from 'src/app/interfaces/user';
+import { Auth } from 'src/app/core/providers/auth';
+
 
 @Component({
   selector: 'app-chatbot',
@@ -15,16 +18,26 @@ export class ChatbotPage implements OnInit {
 
   @ViewChild(IonContent, { static: false }) content!: IonContent;
 
+  user!: User;
   messages: IMessage[] = [];
   promt!: FormControl;
   formChat!: FormGroup;
   loading = false;
 
-  constructor(private readonly openaiSrv: Openai) {
+  constructor(private readonly openaiSrv: Openai, private auth: Auth) {
     this.initForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+   
+    const currentUser = this.auth.getUser();
+    if (currentUser) {
+      this.user = currentUser;
+
+      
+      this.addMessage('bot', `👋 ¡Hola ${this.user.firstName}! Bienvenido a EventBot. ¿En qué puedo ayudarte hoy?`);
+    }
+  }
 
   private initForm() {
     this.promt = new FormControl('', [
@@ -37,20 +50,19 @@ export class ChatbotPage implements OnInit {
     });
   }
 
+  addMessage(sender: 'user' | 'bot', content: string) {
+    this.messages.push({ sender, content });
+    this.scrollDown();
+  }
+
   askToGpt() {
     if (!this.formChat.valid) return;
 
     const prompt = this.formChat.value.promt.trim();
 
-    // Mensaje del usuario
-    const userMsg: IMessage = { sender: 'user', content: prompt };
-    this.messages.push(userMsg);
+    
+    this.addMessage('user', prompt);
 
-    // Mensaje del bot (vacío al inicio)
-    const botMsg: IMessage = { sender: 'bot', content: '' };
-    this.messages.push(botMsg);
-
-    this.scrollDown();
     this.formChat.reset();
     this.formChat.disable();
     this.loading = true;
@@ -60,38 +72,17 @@ export class ChatbotPage implements OnInit {
         this.loading = false;
         this.formChat.enable();
 
-        // 🔍 Verifica estructura de la respuesta OpenAI
         const text =
-          res?.choices?.[0]?.message?.content?.trim() ||
-          res?.bot ||
-          'No se recibió respuesta del modelo.';
-
-        this.typeText(text);
+          res?.bot || ' Lo siento, no recibí respuesta del modelo.';
+        this.addMessage('bot', text);
       },
       error: (err) => {
         console.error('❌ Error en la API:', err);
         this.loading = false;
         this.formChat.enable();
-        this.typeText('Error al conectar con el servidor. Intenta más tarde.');
+        this.addMessage('bot', '⚠️ Error al conectar con el servidor. Intenta más tarde.');
       },
     });
-  }
-
-  typeText(text: string) {
-    if (!text) return;
-
-    let textIndex = 0;
-    const messagesLastIndex = this.messages.length - 1;
-
-    const interval = setInterval(() => {
-      if (textIndex < text.length) {
-        this.messages[messagesLastIndex].content += text.charAt(textIndex);
-        textIndex++;
-      } else {
-        clearInterval(interval);
-        this.scrollDown();
-      }
-    }, 15);
   }
 
   scrollDown() {

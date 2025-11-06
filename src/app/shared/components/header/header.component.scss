@@ -1,48 +1,101 @@
+/* 💎 Encabezado con degradado azul brillante */
 ion-header,
 ion-toolbar {
-  --background: linear-gradient(90deg, #E63946, #F77F00, #FFB703);
-  --color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  
+  --background: linear-gradient(100deg, #007bff, #00b4d8, #48cae4);
+  --color: #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
 }
 
+/* ✨ Sutil animación de brillo en el degradado */
+ion-toolbar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 6s infinite linear;
+  opacity: 0.5;
+}
+
+@keyframes shine {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+/* 🔹 Ajustes del toolbar */
 ion-toolbar {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   height: 60px;
-  padding-left: 8px;
+  padding-left: 10px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Botón redondo limpio */
+/* 🔘 Botón de retroceso moderno */
 .back-btn {
   --background: transparent;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   width: 42px;
   height: 42px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.25s ease-in-out;
+  backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-/* Icono */
+/* Icono dentro del botón */
 .back-btn ion-icon {
   font-size: 22px;
-  color: #fff;
+  color: #ffffff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
-/* Efecto hover */
+/* 🔥 Efecto hover (resalta el botón con más brillo) */
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
 }
 
-/* Modo oscuro */
+/* 🕶️ Efecto “click” (interactivo y suave) */
+.back-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 🌙 Modo oscuro elegante */
 :host-context(body.dark) ion-header,
 :host-context(.dark-theme) ion-header {
-  background: linear-gradient(90deg, #6A4C93, #023E8A);
+  --background: linear-gradient(100deg, #14213d, #1a237e, #0d47a1);
+  --color: #f5f5f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+:host-context(body.dark) .back-btn,
+:host-context(.dark-theme) .back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
