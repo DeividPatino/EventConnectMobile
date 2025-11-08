@@ -1,0 +1,46 @@
+.profile-content {
+  --background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-container {
+  padding: 24px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 30px;
+}
+
+ion-button {
+  --border-radius: 25px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+}
+
+.extra-section {
+  text-align: left;
+  margin-top: 40px;
+}
+
+.extra-section h3 {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  font-size: 0.95rem;
+}

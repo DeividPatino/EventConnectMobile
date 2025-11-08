@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { HomescreenPageRoutingModule } from './homescreen-routing.module';
 
 import { HomescreenPage } from './homescreen.page';
+import { SharedModule } from 'src/app/shared/shared-module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomescreenPageRoutingModule
+    HomescreenPageRoutingModule,
+    SharedModule
   ],
   declarations: [HomescreenPage]
 })

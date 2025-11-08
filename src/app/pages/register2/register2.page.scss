@@ -1,17 +1,33 @@
+/* ===== Contenedor principal ===== */
 .register2-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  --background: linear-gradient(180deg, #f9fcff 0%, #e3f2fd 100%);
+  min-height: 100%;
+  padding: 25px;
+  background: linear-gradient(180deg, #f9fcff 0%, #e3f2fd 100%);
+  background-attachment: fixed;
+  font-family: 'Poppins', sans-serif;
 }
 
+/* ===== Tarjeta principal ===== */
 ion-card {
+  width: 100%;
+  max-width: 420px;
   margin: 25px;
-  padding: 15px;
+  padding: 25px 20px;
   border-radius: 25px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+ion-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+}
+
+/* ===== Encabezado ===== */
 .card-header {
   text-align: center;
   margin-bottom: 25px;
@@ -22,29 +38,97 @@ ion-card {
   height: auto;
   margin: 10px auto;
   display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 h1 {
   font-size: 1.6rem;
   margin-top: 10px;
-  color: #222;
+  color: #1a237e;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .subtitle {
-  color: #666;
+  color: #607d8b;
   font-size: 1rem;
+  margin-top: 6px;
 }
 
+/* ===== Inputs ===== */
 ion-item {
+  --background: #f5f7fa;
   --border-radius: 10px;
-  margin-top: 10px;
+  --highlight-color-focused: #3f51b5;
+  --padding-start: 10px;
+  margin-top: 12px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
 }
 
+ion-item:focus-within {
+  --background: #e8ebf9;
+}
+
+/* ===== Inputs personalizados ===== */
 app-input {
   margin-bottom: 14px;
+  display: block;
 }
 
+/* ===== Botón principal ===== */
 app-button {
   margin-top: 25px;
+  display: block;
+  text-align: center;
+}
+
+app-button ion-button {
+  --background: linear-gradient(135deg, #3f51b5, #5c6bc0);
+  --color: #ffffff;
+  --border-radius: 20px;
+  --box-shadow: 0 6px 20px rgba(63, 81, 181, 0.3);
   font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s ease;
+}
+
+app-button ion-button:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Texto de edad o info adicional ===== */
+p,
+.age-info {
+  color: #333;
+  font-size: 1.05rem;
+  margin-top: 10px;
+  font-weight: 500;
+  animation: fadeIn 0.4s ease-in;
+}
+
+/* ===== Animación ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 480px) {
+  ion-card {
+    padding: 20px 15px;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+  .logo {
+    width: 95px;
+  }
 }

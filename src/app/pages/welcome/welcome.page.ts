@@ -11,7 +11,7 @@ export class WelcomePage {
   constructor(private navCtrl: NavController) {}
 
   agree() {
-    console.log('Has ido al login ');
-    this.navCtrl.navigateForward('/login');
+    console.log('si quieres seguir inicia sesion ');
+    this.navCtrl.navigateForward('/profile');
   }
 }

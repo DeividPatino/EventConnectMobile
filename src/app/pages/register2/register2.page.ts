@@ -30,8 +30,8 @@ export class Register2Page implements OnInit {
   private initForm() {
     this.birthDate = new FormControl('', [Validators.required]);
     this.idType = new FormControl('', [Validators.required]);
-    this.idNumber = new FormControl('', [Validators.required, Validators.minLength(5)]);
-    this.phone = new FormControl('', [Validators.required, Validators.minLength(7)]);
+    this.idNumber = new FormControl('', [Validators.required, Validators.minLength(10)]);
+    this.phone = new FormControl('', [Validators.required, Validators.minLength(10)]);
 
     this.registerForm = new FormGroup({
       birthDate: this.birthDate,
@@ -41,23 +41,30 @@ export class Register2Page implements OnInit {
     });
   }
 
-  public onBirthDateChange(event: any) {
-    const birthDateValue = new Date(event.detail.value);
+
+  public calculateAge() {
+    const value = this.birthDate.value;
+    if (!value) {
+      this.calculatedAge = null;
+      return;
+    }
+
+    const birthDateValue = new Date(value);
     const today = new Date();
     let age = today.getFullYear() - birthDateValue.getFullYear();
-    const m = today.getMonth() - birthDateValue.getMonth();
+    const monthDiff = today.getMonth() - birthDateValue.getMonth();
 
-    if (m < 0 || (m === 0 && today.getDate() < birthDateValue.getDate())) {
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateValue.getDate())) {
       age--;
     }
 
     this.calculatedAge = age;
-    console.log(' Edad calculada:', age);
+    console.log(`You are ${age} years old 🎉`);
   }
 
   public async doRegister2() {
     if (!this.registerForm.valid) {
-      console.log(' Completa todos los campos antes de continuar');
+      console.log('Completa todos los campos antes de continuar');
       this.registerForm.markAllAsTouched();
       return;
     }
@@ -69,7 +76,7 @@ export class Register2Page implements OnInit {
     this.globalUser.setData('idNumber', idNumber);
     this.globalUser.setData('phone', phone);
 
-    console.log(' Datos guardados en GlobalUser:', this.globalUser.getData());
+    console.log('Datos guardados en GlobalUser:', this.globalUser.getData());
 
     this.navCtrl.navigateForward('/register3');
   }
