@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ organizer?.companyName || 'Organizador' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="organizer-detail-content">
+  <div class="header-row">
+    <img [src]="organizer?.logo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'" alt="logo" />
+    <div class="meta">
+      <h3>{{ organizer?.companyName }}</h3>
+      <p class="email">{{ organizer?.email }}</p>
+      <p class="badge" [class.verified]="organizer?.verified">{{ organizer?.verified ? 'Verificado' : 'No verificado' }}</p>
+    </div>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        <h4>Representante</h4>
+        <p>{{ organizer?.representativeName || '-' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>NIT</h4>
+        <p>{{ organizer?.nit || '-' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>Teléfono</h4>
+        <p>{{ organizer?.phone || '-' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>Categoría</h4>
+        <p>{{ organizer?.category || '-' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>Ubicación</h4>
+        <p>{{ organizer?.city || '-' }} — {{ organizer?.address || '-' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>Descripción</h4>
+        <p>{{ organizer?.description || '-' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="socials">
+    <p *ngIf="organizer?.socials?.instagram"><strong>Instagram:</strong> {{ organizer.socials.instagram }}</p>
+    <p *ngIf="organizer?.socials?.facebook"><strong>Facebook:</strong> {{ organizer.socials.facebook }}</p>
+    <p *ngIf="organizer?.socials?.twitter"><strong>Twitter:</strong> {{ organizer.socials.twitter }}</p>
+    <p *ngIf="organizer?.socials?.whatsapp"><strong>WhatsApp:</strong> {{ organizer.socials.whatsapp }}</p>
+  </div>
+
+  <div class="actions">
+    <ion-button expand="block" color="danger" (click)="close('reject')">Rechazar</ion-button>
+    <ion-button expand="block" color="primary" (click)="close('verify')">Verificar</ion-button>
+  </div>
+</ion-content>

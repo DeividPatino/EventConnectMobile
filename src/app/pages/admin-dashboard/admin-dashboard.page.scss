@@ -18,3 +18,45 @@
   gap: 1rem;
   padding-bottom: 100px; 
 }
+
+.organizer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.organizer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.organizer-actions .status {
+  margin: 0;
+}
+
+/* Ensure the card and the actions sit side-by-side; card takes remaining space */
+.organizer-row app-card {
+  flex: 1 1 auto;
+  min-width: 0; /* allow shrinking */
+}
+
+.organizer-actions {
+  flex: 0 0 150px;
+  align-items: flex-start;
+}
+
+@media (max-width: 700px) {
+  .organizer-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .organizer-actions {
+    flex: none;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

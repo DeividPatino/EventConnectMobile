@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import {
   Auth as AuthFirebase,
   createUserWithEmailAndPassword,
@@ -14,9 +14,11 @@ import {
   getDocs,
   getDoc
 } from '@angular/fire/firestore';
+import { Storage, ref as storageRef, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { NavController } from '@ionic/angular';
 import { GlobalUser } from './global-user';
 import { User } from 'src/app/interfaces/user';
+import { Organizer } from 'src/app/interfaces/organizer';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +31,12 @@ export class Auth {
     private authFirebase: AuthFirebase,
     private firestore: Firestore,
     private navCtrl: NavController,
-    private globalUser: GlobalUser
+    private globalUser: GlobalUser,
+    // make Storage optional in case project doesn't configure it yet
+    @Optional() private storage?: Storage
   ) {}
+
+  // If you want to upload files (logo), inject Storage in constructor. We will lazy-inject if available.
 
   // ✅ Guarda temporalmente el usuario actual
   setUser(user: User) {
@@ -63,16 +69,16 @@ export class Auth {
 
       // Guarda datos en Firestore
       const userRef = doc(this.firestore, `users/${uid}`);
+      // Note: Do NOT store plaintext passwords in Firestore. Firebase Auth manages credentials.
       await setDoc(userRef, {
         uid,
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
-        password: userData.password,
         idType: userData.idType,
         idNumber: userData.idNumber,
         phone: userData.phone,
-        birthDate: userData.birthDate || '',
+        birthDate: userData.birthDate,
         photos: userData.photos || [],
         role: 'user',
         createdAt: new Date()
@@ -157,6 +163,69 @@ export class Auth {
     } catch (error) {
       console.error('❌ Error en getAll:', error);
       return null;
+    }
+  }
+
+  // ✅ Registro de organizer (similar a finishRegistration)
+  async registerOrganizer(organizerData: Organizer, password: string, logoFile?: File): Promise<void> {
+    try {
+      if (!organizerData.email || !password) {
+        throw new Error('Faltan campos obligatorios: email o contraseña.');
+      }
+
+      // Crear en Firebase Auth
+      const res: UserCredential = await createUserWithEmailAndPassword(
+        this.authFirebase,
+        organizerData.email,
+        password
+      );
+
+      const uid = res.user.uid;
+      console.log('✅ Organizer registrado con UID:', uid);
+
+      const organizerRef = doc(this.firestore, `organizers/${uid}`);
+
+      // If a logo file was provided and storage is configured, upload it and get URL
+      let logoUrl = organizerData.logo || '';
+      try {
+        if (logoFile && this.storage) {
+          const storageReference = storageRef(this.storage, `organizers/${uid}/logo_${Date.now()}`);
+          await uploadBytes(storageReference, logoFile);
+          logoUrl = await getDownloadURL(storageReference);
+        }
+      } catch (uploadErr) {
+        console.warn('⚠️ Error subiendo logo (se continuará sin logo):', uploadErr);
+      }
+
+      const organizerDoc: Organizer = {
+        uid,
+        email: organizerData.email,
+        companyName: organizerData.companyName,
+        representativeName: organizerData.representativeName || '',
+        nit: organizerData.nit || '',
+        phone: organizerData.phone,
+        website: organizerData.website || '',
+        category: organizerData.category || '',
+        address: organizerData.address || '',
+        city: organizerData.city || '',
+        description: organizerData.description || '',
+        logo: logoUrl,
+        role: 'organizer',
+        verified: false,
+        socials: organizerData.socials || {},
+        createdAt: new Date().toISOString(),
+        eventsCount: 0,
+        rating: 0
+      };
+
+      await setDoc(organizerRef, organizerDoc);
+
+      console.log('📦 Organizer guardado en Firestore');
+      this.navCtrl.navigateRoot('/login');
+
+    } catch (error: any) {
+      console.error('❌ Error al registrar organizer:', error.message);
+      throw error;
     }
   }
 }

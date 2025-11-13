@@ -19,6 +19,18 @@
     </ng-template>
   </ng-container>
 
+  <ng-container *ngIf="activeTab === 'organizers'">
+    <h2 class="section-title">Organizadores Registrados ({{ organizers.length }})</h2>
+    <div *ngIf="organizers.length; else noOrganizers" class="cards-container">
+      <div *ngFor="let org of organizers" class="organizer-row">
+        <app-card [data]="org" (verify)="verifyOrganizer($event)" (reject)="rejectOrganizer($event)"></app-card>
+      </div>
+    </div>
+    <ng-template #noOrganizers>
+      <p>No hay organizadores registrados.</p>
+    </ng-template>
+  </ng-container>
+
   <ng-container *ngIf="activeTab === 'events'">
     <h2 class="section-title">Eventos Publicados ({{ events.length }})</h2>
     <div *ngIf="events.length; else noEvents" class="cards-container">

@@ -1,0 +1,37 @@
+// Firestore security rules example for users and organizers
+// Adapt and test before deploying to production.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users collection: users can read their own document, admins can read all
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId; // user can create own doc
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin(request.auth.uid));
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false; // disable delete via client
+    }
+
+    // Organizers collection: only authenticated users can create organizer (e.g., after auth), admins can read
+    match /organizers/{orgId} {
+      allow create: if request.auth != null && request.auth.uid == orgId;
+      allow read: if request.auth != null && (request.auth.uid == orgId || isAdmin(request.auth.uid));
+      allow update: if request.auth != null && request.auth.uid == orgId;
+      allow delete: if isAdmin(request.auth.uid);
+    }
+
+    // Events collection: creators can create, public read (example)
+    match /events/{eventId} {
+      allow create: if request.auth != null;
+      allow read: if true;
+      allow update, delete: if request.auth != null && resource.data.ownerId == request.auth.uid;
+    }
+
+    // helper function to check admin role (you must implement your own logic)
+    function isAdmin(uid) {
+      // Example: check a custom claim or an 'admins' collection - this is placeholder
+      return uid == 'ADMIN_UID_PLACEHOLDER';
+    }
+  }
+}

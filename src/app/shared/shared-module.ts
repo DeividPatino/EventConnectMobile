@@ -8,6 +8,7 @@ import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
 import { TabComponent } from './components/tab/tab.component';
 import { HeaderComponent } from './components/header/header.component';
+import { OrganizerDetailComponent } from './components/organizer-detail/organizer-detail.component';
 
 
 const modules = [
@@ -25,6 +26,7 @@ const components = [
   TabComponent,
   HeaderComponent
   
+  
 ];
 
 
@@ -35,11 +37,14 @@ const components = [
 ],
   imports: [
     CommonModule,
-    ...modules
+    ...modules,
+    // OrganizerDetailComponent is standalone; import it here so consumers can use it via SharedModule
+    OrganizerDetailComponent
   ],
   exports: [
   ...modules,
-   ... components
+   ... components,
+   OrganizerDetailComponent
   ],
  
 })

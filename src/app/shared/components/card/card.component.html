@@ -1,26 +1,40 @@
-<ion-card class="user-card">
+<ion-card class="user-card" [class.organizer]="data?.role === 'organizer'" (click)="data?.role === 'organizer' && openDetails()" [attr.tappable]="data?.role === 'organizer' ? true : null">
 
   <div class="image-container">
     <img
-      [src]="data?.photos?.[0] || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
-      alt="Foto del usuario"
+      [src]="data?.logo || data?.photos?.[0] || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'"
+      alt="Foto/Logo"
       class="user-photo"
     />
   </div>
 
-
   <ion-card-header>
     <ion-card-title>
-      {{ data?.firstName || 'Sin nombre' }} {{ data?.lastName || '' }}
+      <!-- Organizer shows companyName; users show person name -->
+      <ng-container *ngIf="data?.role === 'organizer'; else personName">
+        {{ data?.companyName || 'Sin nombre' }}
+      </ng-container>
+      <ng-template #personName>
+        {{ data?.firstName || 'Sin nombre' }} {{ data?.lastName || '' }}
+      </ng-template>
     </ion-card-title>
     <ion-card-subtitle>{{ data?.email || 'Sin correo' }}</ion-card-subtitle>
   </ion-card-header>
 
-
   <ion-card-content>
-    <p><strong>Teléfono:</strong> {{ data?.phone || 'N/A' }}</p>
-    <p><strong>Tipo de documento:</strong> {{ data?.idType || 'N/A' }}</p>
-    <p><strong>Número de documento:</strong> {{ data?.idNumber || 'N/A' }}</p>
-    <p><strong>Fecha de nacimiento:</strong> {{ data?.birthDate || 'N/A' }}</p>
+    <ng-container *ngIf="data?.role === 'organizer'; else userFields">
+      <!-- Minimal organizer info shown on the card; full info in modal -->
+      <p><strong>Categoría:</strong> {{ data?.category || 'N/A' }}</p>
+      <p><strong>Ciudad:</strong> {{ data?.city || 'N/A' }}</p>
+      <p><strong>Verificado:</strong> <span [ngClass]="{'verified': data?.verified}">{{ data?.verified ? 'Sí' : 'No' }}</span></p>
+    </ng-container>
+
+    <ng-template #userFields>
+      <!-- Keep original user layout (no modal, no verify) -->
+      <p><strong>Teléfono:</strong> {{ data?.phone || 'N/A' }}</p>
+      <p><strong>Tipo de documento:</strong> {{ data?.idType || 'N/A' }}</p>
+      <p><strong>Número de documento:</strong> {{ data?.idNumber || 'N/A' }}</p>
+      <p><strong>Fecha de nacimiento:</strong> {{ getFormattedBirthDate() }}</p>
+    </ng-template>
   </ion-card-content>
 </ion-card>

@@ -1,0 +1,48 @@
+.organizer-detail-content {
+  padding: 12px;
+
+  .header-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+
+    img {
+      width: 84px;
+      height: 84px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .meta h3 {
+      margin: 0 0 4px 0;
+      font-size: 1.05rem;
+    }
+
+    .email {
+      margin: 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      margin-top: 6px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: #eee;
+      display: inline-block;
+      font-size: 0.8rem;
+    }
+
+    .badge.verified { background: #dff6e0; color: #136a2b; }
+  }
+
+  .socials p { margin: 6px 0; }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+}

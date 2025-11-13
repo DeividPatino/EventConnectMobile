@@ -14,4 +14,9 @@ export class ProfilePage {
     console.log('➡️ Redirigiendo al login...');
     this.navCtrl.navigateForward('/login');
   }
+
+  goToHome() {
+    console.log('⬅️ Volviendo al homescreen...');
+    this.navCtrl.navigateRoot('/homescreen');
+  }
 }

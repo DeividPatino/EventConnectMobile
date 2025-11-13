@@ -1,0 +1,162 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>register-organizer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">register-organizer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- New multi-step organizer registration -->
+  <form #orgForm="ngForm" (ngSubmit)="submit(orgForm)">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="8" offset-md="2">
+
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Datos del Organizador</ion-card-title>
+              <ion-card-subtitle>Completa la información de tu empresa</ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+
+              <!-- STEP 1: Cuenta -->
+              <div *ngIf="step === 1">
+                <ion-item>
+                  <ion-label position="stacked">Correo electrónico</ion-label>
+                  <ion-input name="email" [(ngModel)]="organizer.email" type="email" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Contraseña</ion-label>
+                  <ion-input name="password" [(ngModel)]="password" type="password" required minlength="6"></ion-input>
+                </ion-item>
+
+                <ion-button expand="block" (click)="next()">Siguiente</ion-button>
+              </div>
+
+              <!-- STEP 2: Empresa -->
+              <div *ngIf="step === 2">
+                <ion-item>
+                  <ion-label position="stacked">Nombre de la empresa</ion-label>
+                  <ion-input name="companyName" [(ngModel)]="organizer.companyName" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Nombre del representante</ion-label>
+                  <ion-input name="representativeName" [(ngModel)]="organizer.representativeName"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">NIT o documento</ion-label>
+                  <ion-input name="nit" [(ngModel)]="organizer.nit"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Teléfono</ion-label>
+                  <ion-input name="phone" [(ngModel)]="organizer.phone" type="tel" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Sitio web</ion-label>
+                  <ion-input name="website" [(ngModel)]="organizer.website" type="url"></ion-input>
+                </ion-item>
+
+                <ion-button expand="block" color="light" (click)="prev()">Anterior</ion-button>
+                <ion-button expand="block" (click)="next()">Siguiente</ion-button>
+              </div>
+
+              <!-- STEP 3: Ubicación y descripción -->
+              <div *ngIf="step === 3">
+                <ion-item>
+                  <ion-label position="stacked">Categoría</ion-label>
+                  <ion-select name="category" [(ngModel)]="organizer.category">
+                    <ion-select-option value="conciertos">Conciertos</ion-select-option>
+                    <ion-select-option value="festivales">Festivales</ion-select-option>
+                    <ion-select-option value="corporativos">Eventos corporativos</ion-select-option>
+                    <ion-select-option value="sociales">Eventos sociales</ion-select-option>
+                    <ion-select-option value="deportivos">Eventos deportivos</ion-select-option>
+                  </ion-select>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Dirección</ion-label>
+                  <ion-input name="address" [(ngModel)]="organizer.address"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Ciudad</ion-label>
+                  <ion-select name="city" [(ngModel)]="organizer.city">
+                    <ion-select-option value="cartagena">Cartagena</ion-select-option>
+                    <ion-select-option value="barranquilla">Barranquilla</ion-select-option>
+                    <ion-select-option value="bogota">Bogotá</ion-select-option>
+                    <ion-select-option value="medellin">Medellín</ion-select-option>
+                    <ion-select-option value="cali">Cali</ion-select-option>
+                  </ion-select>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Descripción de la empresa</ion-label>
+                  <ion-textarea name="description" [(ngModel)]="organizer.description" placeholder="Cuéntanos sobre tu empresa o los eventos que organizas..."></ion-textarea>
+                </ion-item>
+
+                <ion-button expand="block" color="light" (click)="prev()">Anterior</ion-button>
+                <ion-button expand="block" (click)="next()">Siguiente</ion-button>
+              </div>
+
+              <!-- STEP 4: Logo y redes, revisión -->
+              <div *ngIf="step === 4">
+                <ion-item>
+                  <ion-label position="stacked">Logo de la empresa</ion-label>
+                  <input type="file" accept="image/*" (change)="onLogoSelected($event)" />
+                </ion-item>
+                <img *ngIf="previewLogo" [src]="previewLogo" class="logo-preview" />
+
+                <ion-card-subtitle class="ion-padding-top">Redes Sociales</ion-card-subtitle>
+
+                <ion-item>
+                  <ion-label position="stacked">Instagram</ion-label>
+                  <ion-input name="instagram" [(ngModel)]="organizer.socials.instagram"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Facebook</ion-label>
+                  <ion-input name="facebook" [(ngModel)]="organizer.socials.facebook"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Twitter / X</ion-label>
+                  <ion-input name="twitter" [(ngModel)]="organizer.socials.twitter"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">YouTube</ion-label>
+                  <ion-input name="youtube" [(ngModel)]="organizer.socials.youtube"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">TikTok</ion-label>
+                  <ion-input name="tiktok" [(ngModel)]="organizer.socials.tiktok"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">WhatsApp</ion-label>
+                  <ion-input name="whatsapp" [(ngModel)]="organizer.socials.whatsapp"></ion-input>
+                </ion-item>
+
+                <ion-button expand="block" color="light" (click)="prev()">Anterior</ion-button>
+                <ion-button expand="block" color="primary" type="submit">Registrar Organizador</ion-button>
+              </div>
+
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

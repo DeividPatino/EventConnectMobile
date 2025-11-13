@@ -2,3 +2,32 @@ ion-router-outlet {
   position: relative !important;
   z-index: 1 !important;
 }
+
+/* Styles for the centered FAB that visually splits the tab bar */
+.homescreen-fab {
+  --transform: translateY(-14px);
+  /* Slight lift so it overlaps the tab bar */
+  transform: var(--transform);
+}
+
+.homescreen-fab ion-fab-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #ffffff, #f2f2f2);
+  border: 2px solid rgba(255,255,255,0.6);
+}
+
+.homescreen-fab ion-fab-button ion-icon {
+  font-size: 26px;
+  color: var(--ion-color-primary-contrast, #fff);
+}
+
+/* Make sure the fab sits above the tab bar */
+.homescreen-fab {
+  z-index: 9999;
+}

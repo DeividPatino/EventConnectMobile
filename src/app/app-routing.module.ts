@@ -43,7 +43,11 @@ const routes: Routes = [
      path: '',
      redirectTo: 'welcome',
      pathMatch: 'full'
-   },
+   },  {
+    path: 'register-organizer',
+    loadChildren: () => import('./pages/register-organizer/register-organizer.module').then( m => m.RegisterOrganizerPageModule)
+  },
+
   
 
 

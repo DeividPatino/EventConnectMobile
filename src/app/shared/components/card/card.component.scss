@@ -89,6 +89,36 @@ ion-card-content {
       font-weight: 600;
     }
   }
+
+  // Social links block
+  .socials {
+    margin-top: 8px;
+
+    p {
+      margin: 6px 0;
+      display: block;
+      justify-content: flex-start;
+
+      strong {
+        width: 110px;
+        display: inline-block;
+      }
+    }
+  }
+
+  // Make verify buttons more prominent and spaced
+  ion-button {
+    margin-top: 12px;
+    --border-radius: 10px;
+    font-weight: 600;
+    height: 44px;
+    display: block;
+    width: 100%;
+  }
+
+  ion-button[disabled] {
+    opacity: 0.75;
+  }
 }
 
 // 📱 Responsividad
