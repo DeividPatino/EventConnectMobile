@@ -24,6 +24,9 @@
   <ion-card-content>
     <ng-container *ngIf="data?.role === 'organizer'; else userFields">
       <!-- Minimal organizer info shown on the card; full info in modal -->
+      <p><strong>Empresa:</strong> {{ data?.companyName || 'N/A' }}</p>
+      <p><strong>Representante:</strong> {{ data?.representativeName || 'N/A' }}</p>
+      <p><strong>NIT:</strong> {{ data?.nit || 'N/A' }}</p>
       <p><strong>Categoría:</strong> {{ data?.category || 'N/A' }}</p>
       <p><strong>Ciudad:</strong> {{ data?.city || 'N/A' }}</p>
       <p><strong>Verificado:</strong> <span [ngClass]="{'verified': data?.verified}">{{ data?.verified ? 'Sí' : 'No' }}</span></p>
