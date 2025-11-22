@@ -5,7 +5,7 @@ describe('OrganizerPanelPage', () => {
   let component: OrganizerPanelPage;
   let fixture: ComponentFixture<OrganizerPanelPage>;
 
-  beforeEach(() => {
+  beforeEach(() => {  
     fixture = TestBed.createComponent(OrganizerPanelPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
