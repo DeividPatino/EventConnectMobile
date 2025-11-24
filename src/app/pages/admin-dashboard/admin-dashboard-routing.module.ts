@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: AdminDashboardPage
+  },  {
+    path: 'stadiums',
+    loadChildren: () => import('./stadiums/stadiums.module').then( m => m.StadiumsPageModule)
   }
+
 ];
 
 @NgModule({

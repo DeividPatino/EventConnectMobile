@@ -1,0 +1,16 @@
+/* Normalize submit-row: remove white box around the submit button */
+.submit-row {
+	background: transparent !important;
+	border: none !important;
+	padding: 0.5rem 0 !important;
+}
+.submit-row ion-button {
+	width: 100%;
+	border-radius: 8px;
+}
+.submit-row ion-button[disabled] {
+	opacity: 0.6;
+	cursor: not-allowed;
+	box-shadow: none !important;
+}
+

@@ -1,0 +1,30 @@
+<div class="stadium-list-panel">
+  <h2 class="section-title">Estadios Registrados</h2>
+  <div *ngIf="stadiums.length; else noStadiums" class="stadium-cards-container">
+    <ion-card *ngFor="let stadium of stadiums" class="stadium-card">
+      <ion-card-header>
+        <ion-card-title>{{ stadium.Name }}</ion-card-title>
+        <ion-card-subtitle>{{ stadium.City }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <div><strong>Capacidad:</strong> {{ stadium.Capacity | number }}</div>
+        <div *ngIf="stadium.Zones?.length">
+          <strong>Zonas:</strong>
+          <ul>
+            <li *ngFor="let zone of stadium.Zones">{{ zone.Name }} ({{ zone.capacity }})</li>
+          </ul>
+        </div>
+        <div *ngIf="stadium.MapBase64">
+          <img [src]="stadium.MapBase64" alt="Mapa estadio" class="map-preview" />
+        </div>
+        <div class="card-actions">
+          <ion-button size="small" color="primary" (click)="editStadium(stadium)">Editar</ion-button>
+          <ion-button size="small" color="danger" fill="outline" (click)="confirmDelete(stadium)">Eliminar</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <ng-template #noStadiums>
+    <p>No hay estadios registrados.</p>
+  </ng-template>
+</div>

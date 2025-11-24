@@ -1,7 +1,107 @@
+ion-menu::part(backdrop) {
+  background-color: rgba(30, 41, 59, 0.18); /* darken backdrop, original color scheme */
+}
+
+ion-menu::part(container) {
+  border-radius: 0 18px 18px 0;
+  box-shadow: 4px 0px 16px rgba(30, 41, 59, 0.12);
+  background: #fff;
+  min-width: 240px;
+  max-width: 320px;
+  border-right: 1px solid #e0e7ef;
+}
+ion-menu ion-content {
+  --background: #fff;
+  background: #fff !important;
+  color: #1a1a1a;
+}
+
+ion-menu ion-list {
+  background: #fff !important;
+}
+
+ion-menu ion-item {
+  background: #fff !important;
+  color: #1a1a1a !important;
+  --color: #1a1a1a;
+  --background: #fff;
+  font-weight: 500;
+}
+
+ion-menu .active-item {
+  background: #e0e7ef !important;
+  color: #1a1a1a !important;
+  --color: #1a1a1a;
+}
+
+ion-menu .submenu ion-item {
+  background: #f3f6fa !important;
+  color: #1a1a1a !important;
+  --color: #1a1a1a;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 4px 0;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+ion-menu ion-icon {
+  color: #1a1a1a !important;
+  --color: #1a1a1a;
+}
+
+ion-menu ion-label {
+  color: #1a1a1a !important;
+}
+
 .dashboard-content {
   --background: #f8f9fa;
   padding: 16px;
   overflow-y: auto; /* 👈 habilita scroll */
+}
+/* Menu item active state */
+.active-item {
+  background: #e0e7ef !important;
+  color: #1a1a1a !important;
+  font-weight: 700;
+  border-left: 4px solid #2563eb;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+}
+
+ion-menu .submenu ion-item {
+  padding-left: 36px;
+  font-size: 0.98rem;
+  background: #f3f6fa;
+  border-radius: 8px;
+  margin: 2px 0;
+}
+
+ion-menu .submenu ion-item {
+  border-left: 2px solid #dbeafe;
+}
+ion-menu .submenu ion-item:hover,
+ion-menu .submenu ion-item:focus {
+  background: #e0e7ef !important;
+  color: #2563eb !important;
+}
+ion-menu .submenu ion-item:hover,
+ion-menu .submenu ion-item:focus {
+  background: #e0e7ef;
+  color: #2563eb;
+}
+ion-menu .submenu ion-label {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+ion-menu ion-item {
+  border-radius: 10px;
+  margin-bottom: 2px;
+  transition: background 0.2s, color 0.2s;
+}
+ion-menu ion-item:hover,
+ion-menu ion-item:focus {
+  background: #e0e7ef;
+  color: #2563eb;
 }
 
 .section-title {

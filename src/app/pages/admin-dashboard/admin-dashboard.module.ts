@@ -8,6 +8,9 @@ import { AdminDashboardPageRoutingModule } from './admin-dashboard-routing.modul
 
 import { AdminDashboardPage } from './admin-dashboard.page';
 import { SharedModule } from 'src/app/shared/shared-module';
+import { CreatePageModule } from '../admin-dashboard/stadiums/create/create.module';
+import { ListPageModule } from '../admin-dashboard/stadiums/list/list.module';
+import { EditPageModule } from '../admin-dashboard/stadiums/edit/edit.module';
 
 
 @NgModule({
@@ -16,8 +19,13 @@ import { SharedModule } from 'src/app/shared/shared-module';
     FormsModule,
     IonicModule,
     AdminDashboardPageRoutingModule,
-    SharedModule
+    SharedModule,
+    CreatePageModule,
+    ListPageModule,
+    EditPageModule
   ],
-  declarations: [AdminDashboardPage]
+  declarations: [
+    AdminDashboardPage
+  ]
 })
 export class AdminDashboardPageModule {}

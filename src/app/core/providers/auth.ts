@@ -118,6 +118,18 @@ export class Auth {
       console.log('✅ Usuario autenticado:', res.user.email);
 
       // Buscar sus datos en Firestore
+      // Primero revisar si existe como organizer
+      const orgRef = doc(this.firestore, `organizers/${res.user.uid}`);
+      const orgSnap = await getDoc(orgRef);
+      if (orgSnap.exists()) {
+        const data = orgSnap.data() as any;
+        // store organizer as current user
+        this.setUser(data as unknown as User);
+        console.log('🎫 Organizer cargado:', data.companyName || data.email);
+        return;
+      }
+
+      // Si no es organizer, revisar users
       const userRef = doc(this.firestore, `users/${res.user.uid}`);
       const docSnap = await getDoc(userRef);
 
@@ -126,9 +138,6 @@ export class Auth {
         this.setUser(data);
         console.log('👤 Usuario cargado:', data.firstName);
       }
-
-      // Redirigir
-      this.navCtrl.navigateRoot('/homescreen');
 
     } catch (error: any) {
       console.error('❌ Error al iniciar sesión:', error.message);

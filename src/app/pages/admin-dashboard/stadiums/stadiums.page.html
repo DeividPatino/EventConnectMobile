@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Estadios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="stadiumTab" (ionChange)="onSegmentChange($event)" color="primary">
+    <ion-segment-button value="list">Listar</ion-segment-button>
+    <ion-segment-button value="create">Crear</ion-segment-button>
+    <ion-segment-button value="edit">Editar</ion-segment-button>
+  </ion-segment>
+
+  <router-outlet></router-outlet>
+</ion-content>

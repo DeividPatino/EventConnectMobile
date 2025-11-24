@@ -52,6 +52,8 @@ const routes: Routes = [
     path: 'organizer-panel',
     loadChildren: () => import('./pages/organizer-panel/organizer-panel.module').then( m => m.OrganizerPanelPageModule)
   },
+  // Ruta 'list' errónea eliminada; listado de estadios se maneja dentro de admin-dashboard/stadiums
+
 
   
 

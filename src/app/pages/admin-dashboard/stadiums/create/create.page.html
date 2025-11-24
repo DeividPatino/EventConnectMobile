@@ -1,0 +1,107 @@
+<div class="create-stadium-panel">
+  <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
+    <ion-list>
+      <!-- SECCIÓN 1: Ciudad -->
+      <ion-item-group>
+        <ion-item-divider color="light">Ciudad</ion-item-divider>
+        <ion-item>
+          <ion-label position="stacked">Ciudad *</ion-label>
+          <ion-select formControlName="city" interface="popover" placeholder="Selecciona ciudad">
+            <ion-select-option *ngFor="let c of cities" [value]="c">{{ c }}</ion-select-option>
+            <ion-select-option value="__new__">Crear nueva ciudad…</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger" *ngIf="form.get('city')?.touched && form.get('city')?.invalid && !alertOpen">Requerido</ion-text>
+        <ion-item *ngIf="isNewCity">
+          <ion-label position="stacked">Nombre nueva ciudad *</ion-label>
+          <ion-input formControlName="newCityName" placeholder="Ej: Barranquilla"></ion-input>
+        </ion-item>
+      </ion-item-group>
+
+      <!-- SECCIÓN 2: Datos del estadio -->
+      <ion-item-group>
+        <ion-item-divider color="light">Datos del Estadio</ion-item-divider>
+        <ion-item>
+          <ion-label position="stacked">Nombre del estadio *</ion-label>
+          <ion-input formControlName="stadiumName" placeholder="Ej: Estadio Metropolitano"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="form.get('stadiumName')?.touched && form.get('stadiumName')?.invalid && !alertOpen">Nombre ≥3</ion-text>
+        <ion-item>
+          <ion-label position="stacked">Capacidad total *</ion-label>
+          <ion-input type="number" min="1" formControlName="stadiumCapacity" placeholder="Ej: 45000"></ion-input>
+        </ion-item>
+        <!-- mismatch message replaced by alert -->
+        <ion-text color="danger" *ngIf="form.get('stadiumCapacity')?.touched && form.get('stadiumCapacity')?.hasError('required') && !alertOpen">Requerido</ion-text>
+      </ion-item-group>
+
+      <!-- SECCIÓN 3: Mapa Base64 -->
+      <ion-item-group>
+        <ion-item-divider color="light">Mapa del Estadio</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label position="stacked">Mapa (imagen)</ion-label>
+          <ion-button expand="block" (click)="triggerMapPicker()">Subir mapa</ion-button>
+        </ion-item>
+        <input id="mapInput" type="file" accept="image/*" hidden (change)="uploadMap($event)">
+        <div *ngIf="mapPreview" class="map-preview-wrapper">
+          <img [src]="mapPreview" class="map-preview" alt="Mapa estadio" />
+        </div>
+      </ion-item-group>
+
+      <!-- SECCIÓN 4: Zonas -->
+      <ion-item-group>
+        <ion-item-divider color="light">Zonas del Estadio</ion-item-divider>
+        <ion-item lines="none">
+          <ion-button size="small" (click)="addZone()" [disabled]="zonesArray.length >= maxZones">Agregar zona</ion-button>
+          <ion-note slot="end">(Máx {{ maxZones }})</ion-note>
+        </ion-item>
+        <div class="zones-container" *ngIf="zonesArray.length; else noZones">
+          <ion-card *ngFor="let z of zonesFormGroups; let i = index" [formGroup]="z" class="zone-card">
+            <ion-card-header>
+              <ion-card-title>Zona {{ i + 1 }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-item>
+                <ion-label position="stacked">Nombre *</ion-label>
+                <ion-input formControlName="name" placeholder="Ej: Norte"></ion-input>
+              </ion-item>
+              <ion-text color="danger" *ngIf="z.get('name')?.touched && z.get('name')?.invalid && !alertOpen">Nombre ≥2</ion-text>
+              <ion-item>
+                <ion-label position="stacked">Capacidad *</ion-label>
+                <ion-input type="number" min="1" formControlName="capacity" placeholder="Ej: 11250"></ion-input>
+              </ion-item>
+              <ion-text color="danger" *ngIf="z.get('capacity')?.touched && z.get('capacity')?.invalid && !alertOpen">Capacidad ≥1</ion-text>
+              <ion-button color="danger" fill="outline" size="small" (click)="removeZone(i)">Eliminar</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </div>
+        <ng-template #noZones>
+          <ion-item>
+            <ion-label>Agrega al menos una zona.</ion-label>
+          </ion-item>
+        </ng-template>
+        <ion-item *ngIf="zonesArray.length">
+          <ion-label>Suma capacidades: {{ zonesCapacitySum }} / {{ form.get('stadiumCapacity')?.value || 0 }}</ion-label>
+        </ion-item>
+      </ion-item-group>
+
+      <!-- Submit -->
+      <ion-item lines="none" class="submit-row">
+        <ion-button type="submit" expand="block" color="success" [disabled]="loading">
+          <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+          <span *ngIf="!loading">Guardar Estadio</span>
+        </ion-button>
+      </ion-item>
+      <!-- debug removed -->
+    </ion-list>
+  </form>
+      <!-- Inline alert (replaces programmatic AlertController) -->
+      <ion-alert
+        trigger="present-alert"
+        [isOpen]="alertOpen"
+        [buttons]="alertButtons"
+        [header]="alertHeader"
+        [subHeader]="alertSubHeader"
+        [message]="alertMessage"
+        (didDismiss)="alertOpen=false"
+      ></ion-alert>
+    </div>

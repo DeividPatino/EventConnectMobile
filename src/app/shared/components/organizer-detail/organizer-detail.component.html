@@ -64,7 +64,7 @@
   </div>
 
   <div class="actions">
-    <ion-button expand="block" color="danger" (click)="close('reject')">Rechazar</ion-button>
-    <ion-button expand="block" color="primary" (click)="close('verify')">Verificar</ion-button>
+    <ion-button expand="block" color="danger" (click)="close('reject')" [disabled]="organizer?.verified">Rechazar</ion-button>
+    <ion-button expand="block" color="primary" (click)="close('verify')" [disabled]="organizer?.verified">Verificar</ion-button>
   </div>
 </ion-content>

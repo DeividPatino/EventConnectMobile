@@ -1,0 +1,179 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="eventForm" novalidate (ngSubmit)="createEvent()">
+    <ion-list>
+      <!-- Indicador de pasos -->
+      <ion-item lines="none">
+        <ion-label>Paso {{ currentStep }} / {{ totalSteps }}</ion-label>
+        <ion-progress-bar [value]="currentStep / totalSteps"></ion-progress-bar>
+      </ion-item>
+
+      <!-- STEP 1: Información general -->
+      <section *ngIf="currentStep === 1">
+        <ion-item-group>
+          <ion-item-divider color="light">Información General</ion-item-divider>
+          <ion-item>
+            <ion-label position="stacked">Nombre del evento *</ion-label>
+            <ion-input formControlName="name" placeholder="Ej: Concierto J Balvin"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('name')?.invalid">Nombre requerido (≥3)</ion-text>
+          <ion-item>
+            <ion-label position="stacked">Categoría *</ion-label>
+            <ion-select formControlName="category" interface="popover" placeholder="Selecciona">
+              <ion-select-option *ngFor="let cat of (categories | keyvalue)" [value]="cat.key">{{ cat.key | titlecase }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('category')?.invalid">Categoría requerida</ion-text>
+          <ion-item>
+            <ion-label position="stacked">Descripción *</ion-label>
+            <ion-textarea formControlName="description" autoGrow="true" placeholder="Describe el evento"></ion-textarea>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('description')?.invalid">Descripción requerida (≥10)</ion-text>
+        </ion-item-group>
+      </section>
+
+      <!-- STEP 2: Subcategoría / Fútbol -->
+      <section *ngIf="currentStep === 2">
+        <ion-item-group *ngIf="subcategories.length">
+          <ion-item-divider color="light">Subcategoría</ion-item-divider>
+          <ion-item>
+            <ion-label position="stacked">Subcategoría</ion-label>
+            <ion-select formControlName="subcategory" interface="popover" placeholder="Selecciona">
+              <ion-select-option *ngFor="let s of subcategories" [value]="s">{{ s | titlecase }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-item-group>
+        <ion-item-group *ngIf="eventForm.get('subcategory')?.value === 'futbol'">
+          <ion-item-divider color="light">Datos Fútbol</ion-item-divider>
+          <ion-item>
+            <ion-label position="stacked">Equipo Local *</ion-label>
+            <ion-input formControlName="teamLocal" placeholder="Nombre equipo local"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('teamLocal')?.invalid">Requerido</ion-text>
+          <ion-item>
+            <ion-label position="stacked">Equipo Visitante *</ion-label>
+            <ion-input formControlName="teamAway" placeholder="Nombre equipo visitante"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('teamAway')?.invalid">Requerido</ion-text>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('stadium')?.invalid">Requerido</ion-text>
+          <ion-item>
+            <ion-label position="stacked">Liga / Torneo *</ion-label>
+            <ion-select formControlName="league" placeholder="Selecciona liga">
+              <ion-select-option *ngFor="let l of leagues" [value]="l">{{ l }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('league')?.invalid">Requerido</ion-text>
+        </ion-item-group>
+      </section>
+
+      <!-- STEP 3: Fecha / Ciudad / Estadio -->
+      <section *ngIf="currentStep === 3">
+        <ion-item-group>
+          <ion-item-divider color="light">Ubicación y Fecha</ion-item-divider>
+          <ion-item>
+            <ion-label position="stacked">Fecha y hora *</ion-label>
+            <ion-datetime formControlName="date" presentation="date-time"></ion-datetime>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('date')?.invalid">Fecha requerida</ion-text>
+          <ion-item>
+            <ion-label position="stacked">Ciudad *</ion-label>
+            <ion-select formControlName="cityId" interface="popover" placeholder="Selecciona ciudad">
+              <ion-select-option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-text color="danger" *ngIf="submitted && eventForm.get('cityId')?.invalid">Ciudad requerida</ion-text>
+          <ion-item *ngIf="stadiums.length">
+            <ion-label position="stacked">Estadio</ion-label>
+            <ion-select formControlName="stadiumName" interface="popover" placeholder="Selecciona estadio">
+              <ion-select-option *ngFor="let s of stadiums" [value]="s.name">{{ s.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Dirección</ion-label>
+            <ion-input formControlName="address" placeholder="Dirección del evento"></ion-input>
+          </ion-item>
+        </ion-item-group>
+        <ion-item-group *ngIf="zones.length">
+          <ion-item color="tertiary">
+            <ion-label>Zonas detectadas: {{ zones.length }}</ion-label>
+          </ion-item>
+          <ion-item *ngFor="let z of zones">
+            <ion-label>{{ z.name }} (Capacidad: {{ z.capacity }})</ion-label>
+          </ion-item>
+        </ion-item-group>
+      </section>
+
+      <!-- STEP 4: Precios / Mapa -->
+      <section *ngIf="currentStep === 4">
+        <ion-item-group>
+          <ion-item-divider color="light">Precios y Mapa</ion-item-divider>
+          <ion-item>
+            <ion-label position="stacked">Precio base</ion-label>
+            <ion-input type="number" min="0" formControlName="basePrice" placeholder="0"></ion-input>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label position="stacked">Mapa de sillas o zonas</ion-label>
+            <ion-button expand="block" (click)="triggerMapPicker()">Subir mapa</ion-button>
+          </ion-item>
+          <input id="mapInput" type="file" hidden (change)="uploadMap($event)">
+          <div *ngIf="mapPreview" class="map-wrapper">
+            <img [src]="mapPreview" alt="Mapa" class="map-preview" />
+          </div>
+        </ion-item-group>
+        <ion-item-group *ngIf="zoneFormGroups.length">
+          <ion-item-divider color="light">Zonas y precios</ion-item-divider>
+          <ng-container *ngFor="let zp of zoneFormGroups; let i = index">
+            <div [formGroup]="zp">
+              <ion-item>
+                <ion-label>{{ zp.value.zone }} (Capacidad: {{ zp.value.capacity }})</ion-label>
+                <ion-input formControlName="price" type="number" min="0" placeholder="Precio"></ion-input>
+              </ion-item>
+              <ion-text color="danger" *ngIf="submitted && zp.get('price')?.invalid">Precio requerido ≥ 0</ion-text>
+            </div>
+          </ng-container>
+        </ion-item-group>
+        <ion-item-group *ngIf="!zoneFormGroups.length">
+          <ion-item>
+            <ion-label>Selecciona primero ciudad y estadio para definir zonas.</ion-label>
+          </ion-item>
+        </ion-item-group>
+      </section>
+
+      <!-- STEP 5: Multimedia y Revisión -->
+      <section *ngIf="currentStep === 5">
+        <ion-item-group>
+          <ion-item-divider color="light">Multimedia</ion-item-divider>
+          <ion-item lines="none">
+            <ion-label position="stacked">Imagen del evento</ion-label>
+            <ion-button expand="block" (click)="triggerImagePicker()">Subir imagen</ion-button>
+          </ion-item>
+          <input id="imageInput" type="file" hidden (change)="uploadImage($event)">
+          <div *ngIf="imagePreview" class="image-wrapper">
+            <img [src]="imagePreview" alt="Imagen" class="image-preview" />
+          </div>
+        </ion-item-group>
+        <ion-item-group>
+          <ion-item-divider color="light">Revisión</ion-item-divider>
+          <ion-item>
+            <ion-label>Verifica los datos antes de crear el evento.</ion-label>
+          </ion-item>
+        </ion-item-group>
+      </section>
+
+      <!-- Navegación -->
+      <ion-item lines="none" class="wizard-nav">
+        <ion-button slot="start" color="medium" (click)="prevStep()" [disabled]="currentStep === 1">Atrás</ion-button>
+        <ion-button slot="end" color="primary" *ngIf="currentStep < totalSteps" (click)="nextStep()">Siguiente</ion-button>
+        <ion-button slot="end" color="success" type="submit" *ngIf="currentStep === totalSteps" [disabled]="loading || eventForm.invalid">
+          <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
+          <span *ngIf="!loading">Crear evento</span>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth } from 'src/app/core/providers/auth';
 import { Firestore, collection, getDocs, doc, updateDoc } from '@angular/fire/firestore';
 import { NavController, ToastController, AlertController } from '@ionic/angular';
@@ -13,14 +14,16 @@ export class AdminDashboardPage implements OnInit {
   users: any[] = [];
   events: any[] = [];
   organizers: any[] = [];
-  activeTab: string = 'users'; 
+  currentSection: string = 'users';
+  stadiumSubsection: 'list' | 'create' | 'edit' = 'list';
 
   constructor(
     private readonly auth: Auth,
     private readonly firestore: Firestore,
     private readonly navCtrl: NavController,
     private readonly toastCtrl: ToastController,
-    private readonly alertCtrl: AlertController
+    private readonly alertCtrl: AlertController,
+    private readonly router: Router
   ) {}
 
   ngOnInit() {}
@@ -159,7 +162,15 @@ export class AdminDashboardPage implements OnInit {
     this.navCtrl.navigateRoot('/login');
   }
 
-  onTabChange(tab: string) {
-    this.activeTab = tab; 
+  selectSection(section: string) {
+    this.currentSection = section;
+    if (section === 'stadiums') {
+      this.stadiumSubsection = 'list';
+    }
+  }
+
+  openStadiums(action: 'list' | 'create' | 'edit') {
+    this.currentSection = 'stadiums';
+    this.stadiumSubsection = action;
   }
 }

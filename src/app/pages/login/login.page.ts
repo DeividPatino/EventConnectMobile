@@ -44,16 +44,19 @@ export class LoginPage implements OnInit {
 
     try {
       await this.auth.login(this.email.value, this.password.value);
-      console.log(' Inicio de sesión exitoso');
-
+      // Inicio exitoso: redirigir según rol (Auth.setUser ya guardó el usuario cargado)
+      const current = this.auth.getUser();
       if (
         this.email.value === 'admin.eventconnect@eve.co' &&
         this.password.value === 'Admin1234'
       ) {
-        console.log(' Redirigiendo al panel de administración...');
         this.navCtrl.navigateRoot('/admin-dashboard');
+        return;
+      }
+
+      if (current && (current as any).role === 'organizer') {
+        this.navCtrl.navigateRoot('/organizer-panel');
       } else {
-        console.log(' Redirigiendo al home screen...');
         this.navCtrl.navigateRoot('/homescreen');
       }
     } catch (error: any) {
