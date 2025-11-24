@@ -11,6 +11,8 @@ export interface CityStadium {
   name: string;
   capacity?: number;
   zones?: CityZone[];
+  // Base64 string or URL for the stadium map/image if available in Firestore
+  mapBase64?: string | null;
 }
 
 export interface City {
@@ -41,7 +43,9 @@ export class CitiesService {
       zones: (s.zones || s.Zones || []).map((z: any) => ({
         name: z.name || z.Name || '',
         capacity: z.capacity || z.Capacity,
-      }))
+      })),
+      // normalize possible fields used in Firestore documents
+      mapBase64: s.mapBase64 || s.MapBase64 || s.Map || s.map || null
     }));
     return {
       id: raw.id,

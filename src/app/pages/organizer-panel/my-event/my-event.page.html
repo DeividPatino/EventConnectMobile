@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mis eventos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="loading; else eventsList">
+    <ion-spinner name="dots" style="display:block;margin:24px auto;"></ion-spinner>
+  </ng-container>
+  <ng-template #eventsList>
+    <ion-card *ngIf="error">
+      <ion-card-content>{{ error }}</ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="!error && !myEvents.length">
+      <ion-card-header>
+        <ion-card-title>Sin eventos</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Aún no has creado eventos.
+      </ion-card-content>
+    </ion-card>
+    <ng-container *ngFor="let ev of myEvents">
+      <ion-card class="event-card">
+        <div class="card-image" *ngIf="ev.image">
+          <img [src]="ev.image" alt="Imagen evento" />
+        </div>
+        <ion-card-header>
+          <ion-card-title>{{ ev.name }}</ion-card-title>
+          <ion-card-subtitle>{{ ev.date | date:'medium' }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label *ngIf="ev.stadium">Estadio: {{ ev.stadium.name }}</ion-label><br>
+          <ion-label *ngIf="ev.zonesCount !== undefined">Zonas: {{ ev.zonesCount }}</ion-label><br>
+          <ion-label *ngIf="ev.ticketsSold !== undefined">Boletas vendidas: {{ ev.ticketsSold }}</ion-label>
+        </ion-card-content>
+        <ion-item lines="none">
+          <ion-button fill="outline" size="small" (click)="viewDetails(ev.id)">Ver detalles</ion-button>
+          <ion-button fill="outline" size="small" color="warning" (click)="editEvent(ev.id)">Editar</ion-button>
+          <ion-button fill="outline" size="small" color="tertiary" (click)="viewSales(ev.id)">Ventas</ion-button>
+        </ion-item>
+      </ion-card>
+    </ng-container>
+  </ng-template>
+</ion-content>

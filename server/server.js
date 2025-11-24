@@ -39,5 +39,8 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// Simple proxy to Nominatim to avoid CORS issues from the browser
+// (Nominatim proxy endpoints removed)
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server escuchando en http://localhost:${PORT}`));

@@ -10,7 +10,6 @@
       <!-- Indicador de pasos -->
       <ion-item lines="none">
         <ion-label>Paso {{ currentStep }} / {{ totalSteps }}</ion-label>
-        <ion-progress-bar [value]="currentStep / totalSteps"></ion-progress-bar>
       </ion-item>
 
       <!-- STEP 1: Información general -->
@@ -112,13 +111,9 @@
       <section *ngIf="currentStep === 4">
         <ion-item-group>
           <ion-item-divider color="light">Precios y Mapa</ion-item-divider>
-          <ion-item>
-            <ion-label position="stacked">Precio base</ion-label>
-            <ion-input type="number" min="0" formControlName="basePrice" placeholder="0"></ion-input>
-          </ion-item>
+          <!-- Precio base removido según solicitud -->
           <ion-item lines="none">
-            <ion-label position="stacked">Mapa de sillas o zonas</ion-label>
-            <ion-button expand="block" (click)="triggerMapPicker()">Subir mapa</ion-button>
+            <ion-label position="stacked">Mapa</ion-label>
           </ion-item>
           <input id="mapInput" type="file" hidden (change)="uploadMap($event)">
           <div *ngIf="mapPreview" class="map-wrapper">
@@ -169,7 +164,7 @@
       <ion-item lines="none" class="wizard-nav">
         <ion-button slot="start" color="medium" (click)="prevStep()" [disabled]="currentStep === 1">Atrás</ion-button>
         <ion-button slot="end" color="primary" *ngIf="currentStep < totalSteps" (click)="nextStep()">Siguiente</ion-button>
-        <ion-button slot="end" color="success" type="submit" *ngIf="currentStep === totalSteps" [disabled]="loading || eventForm.invalid">
+        <ion-button slot="end" color="success" type="submit" *ngIf="currentStep === totalSteps" [disabled]="!canSubmit()">
           <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
           <span *ngIf="!loading">Crear evento</span>
         </ion-button>

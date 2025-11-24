@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { CitiesService, City, CityStadium, CityZone } from '../../../shared/services/cities.service';
+import { Auth } from '../../../core/providers/auth';
+import { Firestore, collection, addDoc, doc, writeBatch, serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-new-event',
@@ -39,7 +41,9 @@ export class NewEventPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toastController: ToastController,
-    private citiesService: CitiesService
+    private citiesService: CitiesService,
+    private auth: Auth,
+    private firestore: Firestore
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +60,7 @@ export class NewEventPage implements OnInit {
       league: [''],
       date: ['', Validators.required],
       address: [''],
-      basePrice: [null, [Validators.min(0)]],
+      // basePrice removed — not needed
       imageFile: [null],
       mapFile: [null],
       zonePrices: this.fb.array([])
@@ -90,6 +94,8 @@ export class NewEventPage implements OnInit {
       this.stadiums = city ? city.stadiums : [];
       this.eventForm.get('stadiumName')?.setValue('');
       this.zones = [];
+      // clear any previously shown stadium map when city changes
+      this.mapPreview = null;
       this.clearZonePrices();
     });
 
@@ -97,6 +103,8 @@ export class NewEventPage implements OnInit {
     this.eventForm.get('stadiumName')?.valueChanges.subscribe(name => {
       const stadium = this.stadiums.find(s => s.name === name);
       this.zones = stadium?.zones || [];
+      // if the stadium has a map stored in Firestore (base64 or URL), preview it
+      this.mapPreview = stadium?.mapBase64 || null;
       this.buildZonePrices();
     });
   }
@@ -112,7 +120,7 @@ export class NewEventPage implements OnInit {
       case 3:
         return ['date', 'city', 'address'];
       case 4:
-        return ['basePrice', 'mapFile'];
+        return ['mapFile'];
       case 5:
         return ['imageFile'];
       default:
@@ -151,7 +159,8 @@ export class NewEventPage implements OnInit {
   }
 
   private toggleFootballValidators(isFutbol: boolean): void {
-    const footballFields = ['teamLocal', 'teamAway', 'stadium', 'league'];
+    // 'stadium' field is selected in STEP 3 (stadiumName); do not require it here
+    const footballFields = ['teamLocal', 'teamAway', 'league'];
     footballFields.forEach(f => {
       const ctrl = this.eventForm.get(f);
       if (!ctrl) return;
@@ -241,28 +250,65 @@ export class NewEventPage implements OnInit {
       }));
       const city = this.cities.find(c => c.id === payload.cityId);
       const stadium = this.stadiums.find(s => s.name === payload.stadiumName);
-      const finalEvent = {
+      // Obtener UID del organizador autenticado
+      const organizerUser = this.auth.getUser();
+      const organizerUid = organizerUser ? (organizerUser as any).uid : null;
+
+      // Convertir archivos a Base64 (Firestore no almacena objetos File)
+      const imageBase64 = payload.imageFile ? await this.fileToBase64(payload.imageFile) : null;
+      // Para el mapa: priorizar el existente del estadio (mapPreview puede ser base64 o blob URL)
+      let mapBase64: string | null = null;
+      if (payload.mapFile) {
+        mapBase64 = await this.fileToBase64(payload.mapFile);
+      } else if (this.mapPreview && this.mapPreview.startsWith('data:')) {
+        mapBase64 = this.mapPreview;
+      } else if (stadium?.mapBase64) {
+        mapBase64 = stadium.mapBase64;
+      }
+
+      // Documento principal del evento (SIN precios por zonas ni capacidades detalladas)
+      const eventDoc = {
         name: payload.name,
         description: payload.description,
         category: payload.category,
-        subcategory: payload.subcategory,
-        date: payload.date,
-        address: payload.address,
-        basePrice: payload.basePrice,
+        subcategory: payload.subcategory || '',
+        date: payload.date, // mantener formato original (ISO / string) provisto por ion-datetime
+        address: payload.address || '',
         city: city ? { id: city.id, name: city.name } : null,
         stadium: stadium ? { name: stadium.name, capacity: stadium.capacity } : null,
-        zones: zonePricing,
-        footballData: payload.subcategory === 'futbol' ? {
-          teamLocal: payload.teamLocal,
-          teamAway: payload.teamAway,
-          stadium: payload.stadium,
-          league: payload.league
-        } : null,
-        imageFile: payload.imageFile || null,
-        mapFile: payload.mapFile || null
+        image: imageBase64,
+        map: mapBase64,
+        organizerUid: organizerUid,
+        createdAt: serverTimestamp()
       };
-      console.log('Creando evento', finalEvent);
-      // Aquí integración con servicio/API.
+
+      // Crear documento en colección events
+      const eventsCol = collection(this.firestore, 'events');
+      const eventRef = await addDoc(eventsCol, eventDoc);
+
+      // Crear subcolección zones con batch para eficiencia
+      const zonesColPath = `events/${eventRef.id}/zones`;
+      const batch = writeBatch(this.firestore);
+      zonePricing.forEach((z: { name: string; capacity: number; price: number }) => {
+        const zoneRef = doc(collection(this.firestore, zonesColPath));
+        batch.set(zoneRef, {
+          name: z.name,
+          capacity: z.capacity,
+          price: z.price,
+          availableTickets: z.capacity,
+          createdAt: serverTimestamp()
+        });
+      });
+      await batch.commit();
+
+      // OPCIONAL: generación de tickets individuales (muy costoso si capacidad alta).
+      // Toggle para generar tickets uno a uno.
+      const generateIndividualTickets = false; // cambiar a true si se requiere.
+      if (generateIndividualTickets) {
+        await this.generateTicketsForEvent(eventRef.id, zonePricing);
+      }
+
+      console.log('Evento creado en Firestore:', eventRef.id);
       const toast = await this.toastController.create({
         message: 'Evento creado correctamente',
         duration: 2000,
@@ -284,6 +330,63 @@ export class NewEventPage implements OnInit {
       await toast.present();
     } finally {
       this.loading = false;
+    }
+  }
+
+  // Decide if the Create button should be enabled
+  canSubmit(): boolean {
+    if (!this.eventForm) return false;
+    if (this.loading) return false;
+
+    // Basic required fields for any event
+    const required = ['name', 'description', 'category', 'date', 'cityId'];
+    const basicOk = required.every(k => {
+      const c = this.eventForm.get(k);
+      return !!c && c.valid;
+    });
+    if (!basicOk) return false;
+
+    // Stadium selected -> zones/pricing must be valid if zones exist
+    if (this.zonePrices.length > 0) {
+      return this.zonePrices.controls.every(g => g.valid);
+    }
+
+    return true;
+  }
+
+  // Helper: convierte File a Base64 DataURL
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Genera tickets individuales en subcolección events/{eventId}/tickets
+  private async generateTicketsForEvent(eventId: string, zonePricing: { name: string; capacity: number; price: number }[]): Promise<void> {
+    // Limite de 500 operaciones por batch: dividir si excede
+    for (const zone of zonePricing) {
+      const zoneId = zone.name; // usar nombre como identificador lógico
+      let remaining = zone.capacity;
+      while (remaining > 0) {
+        const batch = writeBatch(this.firestore);
+        const batchCount = Math.min(remaining, 500);
+        for (let i = 0; i < batchCount; i++) {
+          const ticketRef = doc(collection(this.firestore, `events/${eventId}/tickets`));
+          batch.set(ticketRef, {
+            eventId,
+            zoneId,
+            price: zone.price,
+            status: 'available',
+            buyerUid: '',
+            createdAt: serverTimestamp()
+          });
+        }
+        await batch.commit();
+        remaining -= batchCount;
+      }
     }
   }
 

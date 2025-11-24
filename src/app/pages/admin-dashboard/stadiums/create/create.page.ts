@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Firestore, doc, getDoc, setDoc, updateDoc, arrayUnion, collection, getDocs } from '@angular/fire/firestore';
@@ -27,7 +28,8 @@ export class CreatePage implements OnInit {
   cities: string[] = []; // nombres de ciudades existentes
   loading = false;
   mapPreview: string | null = null;
-  maxZones = 4;
+  maxZones = 10;
+  // (Leaflet removed) no map references
   // Alert state for inline ion-alert
   alertOpen = false;
   alertHeader = '';
@@ -45,6 +47,8 @@ export class CreatePage implements OnInit {
     this.initForm();
     this.loadCities();
   }
+
+  // lifecycle hooks: AfterViewInit/OnDestroy removed with Leaflet
 
   private initForm(): void {
     this.form = this.fb.group({
@@ -190,6 +194,9 @@ export class CreatePage implements OnInit {
         Zones: zonesPayload
       };
 
+      // Add Location object if coordinates exist
+      // No map/location: this app stores only stadium data and optional map image
+
       await updateDoc(cityRef, { Stadiums: arrayUnion(stadium) });
       await this.presentToast('Estadio guardado correctamente', 'success');
       this.resetForm();
@@ -207,6 +214,7 @@ export class CreatePage implements OnInit {
     if (this.isNewCity && this.form.get('newCityName')?.invalid) reasons.push('Nombre de la nueva ciudad requerido');
     if (this.form.get('stadiumName')?.invalid) reasons.push('Nombre del estadio inválido (mínimo 3 caracteres)');
     if (this.form.get('stadiumCapacity')?.invalid) reasons.push('Capacidad total inválida o faltante');
+    // location fields removed; skip map-location validation
     if (!this.zonesArray.length) reasons.push('Agrega al menos una zona');
     const zonesOk = this.validateZonesCapacity();
     if (!zonesOk) reasons.push('La suma de las capacidades de las zonas debe igualar la capacidad total');
@@ -217,7 +225,11 @@ export class CreatePage implements OnInit {
     this.form.reset();
     this.mapPreview = null;
     while (this.zonesArray.length) this.zonesArray.removeAt(0);
+    // keep marker position but clear form location if desired
   }
+
+  // Map removed: no initMap or location helpers remain
+  
 
   // Present inline ion-alert with list of missing reasons
   private presentMissingAlert(reasons: string[]): void {
