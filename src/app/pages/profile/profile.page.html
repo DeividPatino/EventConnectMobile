@@ -3,30 +3,70 @@
     <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
   </ion-button>
   <div class="profile-container">
-    <h1>Inicia sesión para encontrar cosas divertidas que hacer</h1>
-    <p>Obtén mejores recomendaciones, conéctate  y descubre nuevos eventos.</p>
+    <ng-container *ngIf="user && user.role === 'user'; else loggedOut">
+      <div class="user-card">
+        <div class="user-top">
+          <div class="avatar">
+            <img *ngIf="user.photos && user.photos.length" [src]="user.photos[0]" alt="avatar" />
+            <div *ngIf="!user.photos || !user.photos.length" class="initials">{{ (user.firstName || 'U').charAt(0) + (user.lastName ? user.lastName.charAt(0) : '') }}</div>
+          </div>
+          <div class="user-info">
+            <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+            <p class="subtitle">0 eventos a los que se asistió</p>
+            <div class="counts">
+              <span><strong>0</strong> Siguiendo</span>
+              <span><strong>0</strong> Seguidores</span>
+            </div>
+          </div>
+        </div>
+        <ion-button expand="block" shape="round" color="light" class="add-location">
+          Agregar una ubicación
+        </ion-button>
+        <ion-button expand="block" shape="round" color="danger" class="logout-btn" (click)="logout()">
+          Cerrar sesión
+        </ion-button>
+      </div>
 
-    <ion-button expand="block" shape="round" color="dark" (click)="goToLogin()">
-      Iniciar sesión
-    </ion-button>
+      <div class="extra-section">
+        <h3>Preferencias</h3>
+        <ion-item lines="none">
+          <ion-icon name="heart-outline" slot="start"></ion-icon>
+          <ion-label>Intereses</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label>Amigos</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="ribbon-outline" slot="start"></ion-icon>
+          <ion-label>Organizadores que sigues</ion-label>
+        </ion-item>
+      </div>
+    </ng-container>
 
-    <div class="extra-section">
-      <h3>Ayuda</h3>
-      <ion-item lines="none">
-        <ion-icon name="help-circle-outline" slot="start"></ion-icon>
-        <ion-label>Centro de ayuda</ion-label>
-      </ion-item>
-
-      <h3>Legal</h3>
-      <ion-item lines="none">
-        <ion-icon name="document-outline" slot="start"></ion-icon>
-        <ion-label>Términos del servicio</ion-label>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-        <ion-label>Privacidad</ion-label>
-      </ion-item>
-    </div>
+    <ng-template #loggedOut>
+      <h1>Inicia sesión para encontrar cosas divertidas que hacer</h1>
+      <p>Obtén mejores recomendaciones, conéctate  y descubre nuevos eventos.</p>
+      <ion-button expand="block" shape="round" color="dark" (click)="goToLogin()">
+        Iniciar sesión
+      </ion-button>
+      <div class="extra-section">
+        <h3>Ayuda</h3>
+        <ion-item lines="none">
+          <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+          <ion-label>Centro de ayuda</ion-label>
+        </ion-item>
+        <h3>Legal</h3>
+        <ion-item lines="none">
+          <ion-icon name="document-outline" slot="start"></ion-icon>
+          <ion-label>Términos del servicio</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-label>Privacidad</ion-label>
+        </ion-item>
+      </div>
+    </ng-template>
   </div>
 </ion-content>
 

@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Estadísticas Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!loading; else loadingTpl" class="ion-padding">
+  <ng-container *ngIf="event; else noEventTpl">
+    <h2>{{ event.name }}</h2>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Resumen</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <div class="metric">
+                <span class="label">Capacidad Total</span>
+                <span class="value">{{ totalCapacity }}</span>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="metric">
+                <span class="label">Entradas Vendidas</span>
+                <span class="value sold">{{ totalSold }}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <div class="metric">
+                <span class="label">Ingresos Estimados</span>
+                <span class="value revenue">{{ totalRevenue | currency:'USD':'symbol':'1.0-0' }}</span>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="metric">
+                <span class="label">Vistas</span>
+                <span class="value">{{ views }}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <div class="metric">
+                <span class="label">Ocupación</span>
+                <span class="value">{{ (totalCapacity ? (totalSold / totalCapacity * 100) : 0) | number:'1.0-2' }}%</span>
+                <ion-progress-bar [value]="totalCapacity ? totalSold/totalCapacity : 0" color="tertiary"></ion-progress-bar>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Venta por Zonas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <canvas id="zonesChart" width="400" height="300"></canvas>
+        <div *ngIf="!chartReady" class="hint">Instala chart.js para visualizar el gráfico.</div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Detalle de Zonas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let z of zones">
+            <ion-label>
+              <h3>{{ z.name }}</h3>
+              <p>Capacidad: {{ z.capacity || 0 }} | Precio: {{ z.price | currency:'USD':'symbol':'1.0-0' }}</p>
+              <p>Vendidas: {{ soldForZone(z.id) }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+</ion-content>
+
+<ng-template #loadingTpl>
+  <ion-content class="ion-padding">
+    <ion-spinner></ion-spinner>
+  </ion-content>
+</ng-template>
+<ng-template #noEventTpl>
+  <ion-content class="ion-padding">
+    <p>No se encontró el evento.</p>
+  </ion-content>
+</ng-template>

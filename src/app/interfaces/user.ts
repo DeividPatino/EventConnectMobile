@@ -9,4 +9,5 @@ export interface User {
   password: string;           
   birthDate: string;          
   photos: string[];     
+  role?: 'user' | 'organizer' | 'admin';
 }

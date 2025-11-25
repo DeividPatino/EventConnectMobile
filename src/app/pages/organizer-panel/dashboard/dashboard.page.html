@@ -10,4 +10,30 @@
       <ion-title size="large">dashboard</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ng-container *ngIf="loading; else listTpl">
+    <ion-spinner name="dots" style="display:block;margin:32px auto;"></ion-spinner>
+  </ng-container>
+  <ng-template #listTpl>
+    <ion-card *ngIf="error">
+      <ion-card-content>{{ error }}</ion-card-content>
+    </ion-card>
+    <ion-list *ngIf="events.length; else emptyTpl">
+      <ion-item *ngFor="let ev of events" [routerLink]="['/organizer-panel/event-stats', ev.id]">
+        <ion-label>
+          <h2>{{ ev.name }}</h2>
+          <p>{{ ev.date | date:'mediumDate' }}</p>
+        </ion-label>
+        <ion-button fill="outline" size="small" color="primary" [routerLink]="['/organizer-panel/event-stats', ev.id]">Estadísticas</ion-button>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+  <ng-template #emptyTpl>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Sin eventos</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>Crea tu primer evento para ver estadísticas.</ion-card-content>
+    </ion-card>
+  </ng-template>
 </ion-content>

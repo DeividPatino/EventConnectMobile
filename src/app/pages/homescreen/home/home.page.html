@@ -10,4 +10,38 @@
       <ion-title size="large">Inicio</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="events-container">
+    <ion-card *ngFor="let event of events$ | async" class="event-card">
+      <div class="event-image-container">
+        <img [src]="event.image || 'assets/icon/favicon.png'" alt="{{event.name}}" class="event-image" />
+      </div>
+      
+      <ion-card-content>
+        <div class="event-info">
+          <h2 class="event-title">{{event.name}}</h2>
+          
+          <div class="event-actions">
+            <ion-button fill="clear" class="action-btn">
+              <ion-icon name="share-social-outline"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" class="action-btn">
+              <ion-icon name="heart-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+
+        <div class="event-details">
+          <p class="event-date">
+            <ion-icon name="calendar-outline"></ion-icon>
+            {{formatDate(event.date)}}
+          </p>
+          <p class="event-location" *ngIf="event.stadium || event.address">
+            <ion-icon name="location-outline"></ion-icon>
+            {{event.stadium?.name || event.address}}
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

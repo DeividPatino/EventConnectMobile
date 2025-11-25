@@ -126,6 +126,8 @@ export class Auth {
         // store organizer as current user
         this.setUser(data as unknown as User);
         console.log('🎫 Organizer cargado:', data.companyName || data.email);
+        // Navegar al panel del organizador
+        this.navCtrl.navigateRoot('/organizer-panel');
         return;
       }
 
@@ -137,6 +139,10 @@ export class Auth {
         const data = docSnap.data() as User;
         this.setUser(data);
         console.log('👤 Usuario cargado:', data.firstName);
+        // Si es rol user navegar a perfil, si otro rol futuro manejar aquí
+        if (data.role === 'user') {
+          this.navCtrl.navigateRoot('/profile');
+        }
       }
 
     } catch (error: any) {
@@ -151,7 +157,7 @@ export class Auth {
       await signOut(this.authFirebase);
       console.log('👋 Usuario deslogueado');
       this.currentUser = null;
-      this.navCtrl.navigateRoot('/login');
+      this.navCtrl.navigateRoot('/homescreen');
     } catch (error: any) {
       console.error('❌ Error al cerrar sesión:', error.message);
     }

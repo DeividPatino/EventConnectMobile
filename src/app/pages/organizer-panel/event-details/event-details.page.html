@@ -2,40 +2,81 @@
   <ion-toolbar>
     <ion-title>Detalle Evento</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [value]="activeTab" (ionChange)="switchTab($event.detail.value)">
+      <ion-segment-button value="resumen">
+        <ion-label>Resumen</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="asistentes">
+        <ion-label>Asistentes</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="event; else loadingTpl">
-  <ion-card class="event-detail-card">
-    <div class="card-image" *ngIf="event.image">
-      <img [src]="event.image" alt="Imagen evento" />
-    </div>
-    <ion-card-header>
-      <ion-card-title>{{ event.name }}</ion-card-title>
-      <ion-card-subtitle>{{ event.date | date:'medium' }}</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <p>{{ event.description }}</p>
-      <ion-label *ngIf="event.stadium">Estadio: {{ event.stadium.name }}</ion-label><br>
-      <ion-label *ngIf="event.city">Ciudad: {{ event.city.name }}</ion-label><br>
-    </ion-card-content>
-  </ion-card>
+  <ng-container *ngIf="activeTab==='resumen'">
+    <ion-card class="event-detail-card">
+      <div class="card-image" *ngIf="event.image">
+        <img [src]="event.image" alt="Imagen evento" />
+      </div>
+      <ion-card-header>
+        <ion-card-title>{{ event.name }}</ion-card-title>
+        <ion-card-subtitle>{{ event.date | date:'medium' }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ event.description }}</p>
+        <ion-label *ngIf="event.stadium">Estadio: {{ event.stadium.name }}</ion-label><br>
+        <ion-label *ngIf="event.city">Ciudad: {{ event.city.name }}</ion-label><br>
+      </ion-card-content>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Zonas</ion-card-title>
-    </ion-card-header>
-    <ion-card-content *ngIf="!loadingZones">
-      <ion-list *ngIf="zones.length; else noZonesTpl">
-        <ion-item *ngFor="let z of zones">
-          <ion-label>
-            <h2>{{ z.name }}</h2>
-            <p>Capacidad: {{ z.capacity }} | Precio: {{ z.price | currency:'COP' }} | Disponibles: {{ z.availableTickets }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-    <ion-progress-bar *ngIf="loadingZones" type="indeterminate"></ion-progress-bar>
-  </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Zonas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="!loadingZones">
+        <ion-list *ngIf="zones.length; else noZonesTpl">
+          <ion-item *ngFor="let z of zones">
+            <ion-label>
+              <h2>{{ z.name }}</h2>
+              <p>Capacidad: {{ z.capacity }} | Precio: {{ z.price | currency:'COP' }} | Disponibles: {{ z.availableTickets }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+      <ion-progress-bar *ngIf="loadingZones" type="indeterminate"></ion-progress-bar>
+    </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="activeTab==='asistentes'">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Asistentes</ion-card-title>
+        <ion-button fill="outline" size="small" (click)="exportCsv()">Exportar CSV</ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        <ng-container *ngIf="loadingTickets; else ticketsList">
+          <ion-spinner name="dots" style="display:block;margin:24px auto;"></ion-spinner>
+        </ng-container>
+        <ng-template #ticketsList>
+          <ion-card *ngIf="ticketsError">
+            <ion-card-content>{{ ticketsError }}</ion-card-content>
+          </ion-card>
+          <ion-list *ngIf="tickets.length; else noTicketsTpl">
+            <ion-item *ngFor="let t of tickets">
+              <ion-label>
+                <h2>{{ t.id }}</h2>
+                <p>Usuario: {{ t.userUid }} | Zona: {{ t.zoneId }} | Estado: {{ t.status }}</p>
+              </ion-label>
+              <ion-button size="small" fill="clear" color="success" (click)="markUsed(t)" [disabled]="t.status==='used'">Verificar</ion-button>
+              <ion-button size="small" fill="clear" color="danger" (click)="cancelTicket(t)" [disabled]="t.status==='canceled'">Cancelar</ion-button>
+            </ion-item>
+          </ion-list>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-content>
 
 <ng-template #loadingTpl>
@@ -46,4 +87,8 @@
 
 <ng-template #noZonesTpl>
   <ion-label>No hay zonas registradas.</ion-label>
+</ng-template>
+
+<ng-template #noTicketsTpl>
+  <ion-label>No hay asistentes registrados.</ion-label>
 </ng-template>

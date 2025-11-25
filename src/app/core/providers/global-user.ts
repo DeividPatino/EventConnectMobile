@@ -18,7 +18,7 @@ export class GlobalUser {
     photos: []
   };
 
-  setData(key: keyof User, value: any) {
+  setData<K extends keyof User>(key: K, value: User[K]) {
     this.userData[key] = value;
   }
 

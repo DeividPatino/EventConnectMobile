@@ -1,0 +1,104 @@
+.events-container {
+  padding: 16px;
+  padding-bottom: 80px;
+}
+
+.event-card {
+  margin-bottom: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.event-image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.event-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+ion-card-content {
+  padding: 16px;
+}
+
+.event-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.event-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  padding-right: 8px;
+  color: var(--ion-text-color);
+}
+
+.event-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.action-btn {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
+  height: 36px;
+  
+  ion-icon {
+    font-size: 22px;
+  }
+}
+
+.event-details {
+  margin-bottom: 12px;
+  
+  p {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    
+    ion-icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+  }
+}
+
+.event-date {
+  font-weight: 500;
+}
+
+.event-location {
+  font-weight: 400;
+}
+
+// Responsive adjustments
+@media (min-width: 768px) {
+  .events-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .event-card {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .events-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
