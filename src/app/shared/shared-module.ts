@@ -9,6 +9,7 @@ import { CardComponent } from './components/card/card.component';
 import { TabComponent } from './components/tab/tab.component';
 import { HeaderComponent } from './components/header/header.component';
 import { OrganizerDetailComponent } from './components/organizer-detail/organizer-detail.component';
+import { EventPreviewModalComponent } from '../pages/homescreen/home/preview/event-preview-modal.component';
 
 
 const modules = [
@@ -25,14 +26,15 @@ const components = [
   CardComponent,
   TabComponent,
   HeaderComponent
-  
+  ,
+  EventPreviewModalComponent
   
 ];
 
 
 @NgModule({ schemas:[CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
- ... components
+    ...components
   
 ],
   imports: [
@@ -43,7 +45,7 @@ const components = [
   ],
   exports: [
   ...modules,
-   ... components,
+   ...components,
    OrganizerDetailComponent
   ],
  

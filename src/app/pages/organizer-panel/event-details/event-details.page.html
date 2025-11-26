@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Detalle Evento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" fill="clear" size="small" (click)="confirmDelete()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-segment [value]="activeTab" (ionChange)="switchTab($event.detail.value)">
