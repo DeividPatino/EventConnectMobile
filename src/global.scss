@@ -34,5 +34,182 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
-/* (Leaflet imports removed) */
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+/* Force tab-bar and tab elements to use the app light surface */
+ion-tabs, ion-tab, ion-tab-bar, ion-tab-button, ion-router-outlet {
+  --background: var(--app-surface) !important;
+  background: var(--app-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure tab buttons have transparent individual backgrounds and use primary for selected */
+ion-tab-button {
+  background: transparent !important;
+  --background: transparent !important;
+}
+ion-tab-button.ion-selected, ion-tab-button[aria-selected="true"] {
+  color: var(--primary) !important;
+}
+
+/* Safety: ensure router outlet and pages are light to avoid dark gutters */
+ion-router-outlet, .ion-page, ion-content {
+  --background: var(--app-bg) !important;
+  background: var(--app-bg) !important;
+}
+
+/* If an element gets a dark class, override tabbar/header backgrounds */
+html.dark ion-tab-bar, body.dark ion-tab-bar, .dark ion-tab-bar {
+  --background: var(--app-surface) !important;
+  background: var(--app-surface) !important;
+}
+
+:root {
+  /* Ionic palette + app tokens (light theme) */
+  --ion-color-primary: #2563eb;
+  --ion-color-primary-rgb: 37, 99, 235;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #1f51c3;
+  --ion-color-primary-tint: #3b82f6;
+
+  --ion-color-success: #10b981;
+  --ion-color-warning: #f59e0b;
+  --ion-color-danger: #ef4444;
+
+  /* App-level tokens */
+  --app-bg: #f8fafc; /* page bg */
+  --app-surface: #ffffff; /* cards, toolbars */
+  --text-primary: #0f172a; /* main text */
+  --text-secondary: #334155; /* slate-700 */
+  --text-muted: #64748b; /* slate-500 */
+  --muted: #94a3b8; /* placeholders */
+  --card-border: #e6eefb;
+  --primary: var(--ion-color-primary);
+  --primary-dark: #1e40af;
+  --accent: #60a5fa;
+  --input-bg: transparent;
+  --input-caret: var(--primary);
+  --surface-elev-shadow: 0 6px 20px rgba(37,99,235,0.06);
+  --surface-elev-hover: 0 14px 40px rgba(37,99,235,0.08);
+  --surface-gradient: linear-gradient(180deg, rgba(11,19,32,0.02), rgba(11,19,32,0.01));
+  --radius-lg: 12px;
+}
+
+/* Form controls visibility fixes (for cards and tabs) */
+ion-card ion-item {
+  --background: transparent;
+  --color: var(--text-primary);
+}
+
+/* Ensure native inputs inside Ionic components show proper text color */
+ion-card ion-input::part(native),
+ion-card ion-textarea::part(native),
+ion-card ion-select::part(native),
+ion-card input,
+ion-card textarea,
+ion-card select,
+ion-card .native-input,
+ion-card .textarea-native {
+  color: var(--text-primary) !important;
+  background: var(--input-bg) !important;
+  caret-color: var(--input-caret) !important; /* azul para el cursor */
+}
+
+/* Placeholder color for native inputs */
+input::placeholder,
+textarea::placeholder,
+ion-input::part(native)::-webkit-input-placeholder,
+ion-textarea::part(native)::-webkit-input-placeholder {
+  color: var(--muted) !important; /* gris azulado */
+}
+
+/* Labels contrast */
+ion-label {
+  color: var(--text-secondary) !important;
+}
+
+/* Ensure tabs/pages inside ion-tabs inherit light background so components inside are visible */
+ion-tabs, ion-tab, ion-router-outlet, .ion-page {
+  --background: var(--app-bg);
+}
+
+/* Fallback for any dark backgrounds inside tabs that hide form controls */
+.tab-page, .tab-subpage {
+  background: transparent !important;
+}
+
+/* small utility to make icon-only buttons in headers visible */
+ion-button[fill="clear"] ion-icon {
+  color: var(--primary) !important;
+}
+
+/* Refined global styles for Ionic Searchbar and TabBar (use variables, no static colors) */
+ion-searchbar {
+  --background: var(--app-surface);
+  --border-radius: 14px;
+  --icon-color: var(--text-muted);
+  --placeholder-color: var(--muted);
+  --color: var(--text-primary);
+  height: 46px;
+  margin: 10px 12px;
+  box-shadow: 0 10px 30px rgba(var(--ion-color-primary-rgb), 0.06);
+  border-radius: 14px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+/* Ensure the inner native input uses our variables */
+ion-searchbar .searchbar-input, ion-searchbar::part(native) {
+  color: var(--text-primary) !important;
+  caret-color: var(--input-caret) !important;
+  background: transparent !important;
+}
+ion-searchbar::part(cancel-button) {
+  color: var(--primary) !important;
+}
+
+/* Tab bar: light surface, subtle elevation and clear selected state */
+ion-tab-bar {
+  --background: linear-gradient(180deg, var(--app-surface), rgba(255,255,255,0.98));
+  border-top: 1px solid var(--card-border) !important;
+  box-shadow: 0 -10px 30px rgba(var(--ion-color-primary-rgb), 0.06);
+  padding: 6px 8px;
+  height: 62px;
+}
+
+ion-tab-button {
+  background: transparent !important;
+  --background: transparent !important;
+  --ripple-color: rgba(var(--ion-color-primary-rgb), 0.08);
+  color: var(--text-muted);
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+
+ion-tab-button ion-icon {
+  font-size: 22px;
+}
+
+ion-tab-button ion-label {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Selected visual treatment uses variables (no static color) */
+ion-tab-button.ion-selected, ion-tab-button[aria-selected="true"] {
+  color: var(--primary) !important;
+}
+
+/* Add subtle pill background for selected tab (uses primary with low opacity) */
+ion-tab-button.ion-selected::part(native), ion-tab-button[aria-selected="true"]::part(native) {
+  background: rgba(var(--ion-color-primary-rgb), 0.06) !important;
+  border-radius: 10px !important;
+}
+
+/* Small screens: compact tab bar */
+@media (max-width: 420px) {
+  ion-tab-bar { height: 58px; }
+  ion-tab-button ion-icon { font-size: 20px; }
+  ion-searchbar { height: 42px; margin: 8px 10px; }
+}

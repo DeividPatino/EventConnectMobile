@@ -25,4 +25,19 @@ export class EventPreviewModalComponent {
     };
     return dateObj.toLocaleDateString('es-ES', options);
   }
+
+  async openTicketMap() {
+    const { TicketMapModalComponent } = await import('./ticket-map-modal.component');
+    const modal = await this.modalCtrl.create({
+      component: TicketMapModalComponent,
+      componentProps: { event: this.event }
+    });
+
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data && data.zone) {
+      // por ahora solo loguear, podrías navegar a compra
+      console.log('Zona seleccionada:', data.zone);
+    }
+  }
 }
