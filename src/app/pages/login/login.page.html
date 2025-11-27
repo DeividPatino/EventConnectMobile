@@ -1,5 +1,6 @@
 <ion-content class="login-container" fullscreen="true">
   <form [formGroup]="loginForm" (ngSubmit)="onlogin()" novalidate>
+
     <ion-card>
       <ion-card-content>
 
@@ -39,15 +40,36 @@
           </ion-col>
         </ion-row>
 
-        <!-- Enlace registro -->
         <ion-row class="register-row">
           <ion-col class="ion-text-center">
+
             <span>¿No tienes una cuenta? </span>
-            <a [routerLink]="['/register']">Crea una aquí</a>
+
+            <a (click)="toggleOptions()" style="cursor: pointer;">
+              Crea una aquí
+              <span class="arrow" [class.open]="showOptions"></span>
+            </a>
+
+          
+            <div class="register-options" *ngIf="showOptions">
+              <div class="two-options">
+
+                <div class="option" (click)="navCtrl.navigateForward('/register')">
+                  Usuario
+                </div>
+
+                <div class="option" (click)="navCtrl.navigateForward('/register-organizer')">
+                  Organizador
+                </div>
+
+              </div>
+            </div>
+
           </ion-col>
         </ion-row>
 
       </ion-card-content>
     </ion-card>
+
   </form>
 </ion-content>

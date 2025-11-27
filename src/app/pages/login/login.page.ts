@@ -14,9 +14,11 @@ export class LoginPage implements OnInit {
   public password!: FormControl;
   public loginForm!: FormGroup;
 
+  public showOptions: boolean = false;
+
   constructor(
     private readonly auth: Auth,
-    private readonly navCtrl: NavController
+    public readonly navCtrl: NavController
   ) {
     this.initForm();
   }
@@ -33,6 +35,10 @@ export class LoginPage implements OnInit {
     });
   }
 
+  public toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+
   public async onlogin() {
     if (this.loginForm.invalid) {
       console.log(' El formulario no es válido. Completa todos los campos.');
@@ -44,8 +50,9 @@ export class LoginPage implements OnInit {
 
     try {
       await this.auth.login(this.email.value, this.password.value);
-      // Inicio exitoso: redirigir según rol (Auth.setUser ya guardó el usuario cargado)
+
       const current = this.auth.getUser();
+
       if (
         this.email.value === 'admin.eventconnect@eve.co' &&
         this.password.value === 'Admin1234'

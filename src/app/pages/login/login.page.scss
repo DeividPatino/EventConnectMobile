@@ -148,3 +148,69 @@ app-button {
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* -------------------------------------------------------
+   🔥 NUEVO: MENÚ DINÁMICO DE REGISTRO (Usuario / Organizador)
+   ------------------------------------------------------- */
+
+.register-bar {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(42, 127, 255, 0.25);
+  border-radius: 16px;
+  font-weight: 600;
+  color: $text-dark;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba($blue, 0.18);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba($blue, 0.35);
+  }
+
+  .arrow {
+    font-size: 16px;
+    margin-left: 6px;
+    display: inline-block;
+    transition: transform 0.25s ease;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.register-options {
+  margin-top: 12px;
+  animation: fadeIn 0.25s ease-out;
+
+  .two-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .option {
+    flex: 1;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(42, 127, 255, 0.25);
+    font-weight: 700;
+    color: $blue;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 14px rgba($blue, 0.15);
+
+    &:hover {
+      background: $light-blue;
+      color: $text-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba($blue, 0.35);
+    }
+  }
+}
