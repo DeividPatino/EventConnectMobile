@@ -2,26 +2,25 @@
   <ion-button class="back-button" fill="clear" (click)="goToHome()" aria-label="Volver">
     <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
   </ion-button>
+
   <div class="profile-container">
+
     <ng-container *ngIf="user && user.role === 'user'; else loggedOut">
       <div class="user-card">
         <div class="user-top">
           <div class="avatar">
             <img *ngIf="user.photos && user.photos.length" [src]="user.photos[0]" alt="avatar" />
-            <div *ngIf="!user.photos || !user.photos.length" class="initials">{{ (user.firstName || 'U').charAt(0) + (user.lastName ? user.lastName.charAt(0) : '') }}</div>
+            <div *ngIf="!user.photos || !user.photos.length" class="initials">
+              {{ (user.firstName || 'U').charAt(0) + (user.lastName ? user.lastName.charAt(0) : '') }}
+            </div>
           </div>
+
           <div class="user-info">
             <h2>{{ user.firstName }} {{ user.lastName }}</h2>
             <p class="subtitle">0 eventos a los que se asistió</p>
-            <div class="counts">
-              <span><strong>0</strong> Siguiendo</span>
-              <span><strong>0</strong> Seguidores</span>
-            </div>
           </div>
         </div>
-        <ion-button expand="block" shape="round" color="light" class="add-location">
-          Agregar una ubicación
-        </ion-button>
+
         <ion-button expand="block" shape="round" color="danger" class="logout-btn" (click)="logout()">
           Cerrar sesión
         </ion-button>
@@ -29,14 +28,17 @@
 
       <div class="extra-section">
         <h3>Preferencias</h3>
+
         <ion-item lines="none">
           <ion-icon name="heart-outline" slot="start"></ion-icon>
           <ion-label>Intereses</ion-label>
         </ion-item>
+
         <ion-item lines="none">
           <ion-icon name="people-outline" slot="start"></ion-icon>
           <ion-label>Amigos</ion-label>
         </ion-item>
+
         <ion-item lines="none">
           <ion-icon name="ribbon-outline" slot="start"></ion-icon>
           <ion-label>Organizadores que sigues</ion-label>
@@ -44,29 +46,64 @@
       </div>
     </ng-container>
 
+
+    <!-- 🔹 PARTE SIN LOGIN -->
     <ng-template #loggedOut>
       <h1>Inicia sesión para encontrar cosas divertidas que hacer</h1>
-      <p>Obtén mejores recomendaciones, conéctate  y descubre nuevos eventos.</p>
+      <p>Obtén mejores recomendaciones, conéctate y descubre nuevos eventos.</p>
+
       <ion-button expand="block" shape="round" color="dark" (click)="goToLogin()">
         Iniciar sesión
       </ion-button>
+
       <div class="extra-section">
         <h3>Ayuda</h3>
-        <ion-item lines="none">
+
+        <!-- ⭐ Centro de ayuda -->
+        <ion-item lines="none" (click)="toggleHelp()">
           <ion-icon name="help-circle-outline" slot="start"></ion-icon>
           <ion-label>Centro de ayuda</ion-label>
         </ion-item>
+
+        <div *ngIf="showHelp" class="info-box">
+          <p>Si tienes problemas con la app, escríbenos:</p>
+          <p>
+            📧 <a href="mailto:soporte@eventconnect.com">soporteeventconnect@gmail.com</a>
+          </p>
+          <p>
+            📱 WhatsApp:  
+            <a href="https://wa.me/573023608602" target="_blank">302 360 8602</a>
+          </p>
+        </div>
+
         <h3>Legal</h3>
-        <ion-item lines="none">
+
+        <!-- ⭐ Términos del servicio -->
+        <ion-item lines="none" (click)="toggleTerms()">
           <ion-icon name="document-outline" slot="start"></ion-icon>
           <ion-label>Términos del servicio</ion-label>
         </ion-item>
-        <ion-item lines="none">
+
+        <div *ngIf="showTerms" class="info-box">
+          <p>
+            Los términos del servicio de EventConnect indican que el uso de la plataforma implica aceptar nuestras políticas, reglas y condiciones del sistema.
+          </p>
+        </div>
+
+        <!-- ⭐ Privacidad -->
+        <ion-item lines="none" (click)="togglePrivacy()">
           <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
           <ion-label>Privacidad</ion-label>
         </ion-item>
+
+        <div *ngIf="showPrivacy" class="info-box">
+          <p>
+            Tu información es protegida y solo se usa para mejorar tu experiencia en la app. Nunca compartimos tus datos sin permiso.
+          </p>
+        </div>
+
       </div>
     </ng-template>
+
   </div>
 </ion-content>
-

@@ -7,10 +7,15 @@ import { User } from 'src/app/interfaces/user';
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
-  standalone:false,
+  standalone: false,
 })
 export class ProfilePage implements OnInit {
   user: User | null = null;
+
+  // 🔽 Variables para mostrar mensajes
+  showHelp = false;
+  showTerms = false;
+  showPrivacy = false;
 
   constructor(private navCtrl: NavController, private auth: Auth) {}
 
@@ -34,5 +39,18 @@ export class ProfilePage implements OnInit {
     } catch (err) {
       console.error('Error cerrando sesión:', err);
     }
+  }
+
+  // 🔽 Funciones para abrir/cerrar mensajes
+  toggleHelp() {
+    this.showHelp = !this.showHelp;
+  }
+
+  toggleTerms() {
+    this.showTerms = !this.showTerms;
+  }
+
+  togglePrivacy() {
+    this.showPrivacy = !this.showPrivacy;
   }
 }
