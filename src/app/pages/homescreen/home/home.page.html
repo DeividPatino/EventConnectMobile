@@ -12,7 +12,7 @@
   </ion-header>
 
   <div class="events-container">
-    <ion-card *ngFor="let event of events$ | async" class="event-card">
+    <ion-card *ngFor="let event of events$ | async" class="event-card" (click)="openEventPreview(event)">
       <div class="event-image-container">
         <img [src]="event.image || 'assets/icon/favicon.png'" alt="{{event.name}}" class="event-image" />
       </div>

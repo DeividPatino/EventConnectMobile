@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ event.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" fill="clear">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="hero" *ngIf="event.image">
+    <img [src]="event.image" alt="{{ event.name }}" />
+  </div>
+
+  <div class="content">
+    <h2 class="title">{{ event.name }}</h2>
+    <p class="meta" *ngIf="event.stadium || event.address">
+      <ion-icon name="location-outline"></ion-icon>
+      {{ event.stadium?.name || event.address }}
+    </p>
+    <p class="meta" *ngIf="event.date">
+      <ion-icon name="calendar-outline"></ion-icon>
+      {{ formatDate(event.date) }}
+    </p>
+
+    <div class="intro" *ngIf="event.description">
+      <h3>Introducción</h3>
+      <p>{{ event.description }}</p>
+    </div>
+
+    <div class="actions">
+      <ion-button expand="block" color="primary">Conseguir boletos</ion-button>
+    </div>
+  </div>
+</ion-content>

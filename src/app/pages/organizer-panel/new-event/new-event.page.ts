@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { CitiesService, City, CityStadium, CityZone } from '../../../shared/services/cities.service';
 import { Auth } from '../../../core/providers/auth';
-import { Firestore, collection, addDoc, doc, writeBatch, serverTimestamp } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, writeBatch, serverTimestamp, updateDoc } from '@angular/fire/firestore';
+import { increment, runTransaction } from 'firebase/firestore';
 
 @Component({
   selector: 'app-new-event',
@@ -300,6 +301,19 @@ export class NewEventPage implements OnInit {
         });
       });
       await batch.commit();
+
+      // Incrementar eventsCount en el documento del organizer (si existe UID)
+      if (organizerUid) {
+        try {
+          const organizerRef = doc(this.firestore, `organizers/${organizerUid}`);
+          // Usar transacción para asegurar incremento atómico y consistente
+          await runTransaction(this.firestore as any, async (transaction) => {
+            transaction.update(organizerRef as any, { eventsCount: increment(1) });
+          });
+        } catch (err) {
+          console.warn('No se pudo incrementar eventsCount para organizer', organizerUid, err);
+        }
+      }
 
       // OPCIONAL: generación de tickets individuales (muy costoso si capacidad alta).
       // Toggle para generar tickets uno a uno.

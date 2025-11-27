@@ -4,6 +4,7 @@ import { EventsService } from '../../../shared/services/events.service';
 import { Event } from '../../../interfaces/event';
 import { Zone } from '../../../interfaces/zone';
 import { Ticket } from '../../../interfaces/ticket';
+import { AlertController, ToastController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-event-details',
@@ -22,7 +23,13 @@ export class EventDetailsPage implements OnInit {
   loadingTickets = true;
   ticketsError: string | null = null;
 
-  constructor(private route: ActivatedRoute, private eventsService: EventsService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private eventsService: EventsService,
+    private alertCtrl: AlertController,
+    private toastController: ToastController,
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit(): void {
     this.eventId = this.route.snapshot.paramMap.get('eventId') || '';
@@ -72,5 +79,37 @@ export class EventDetailsPage implements OnInit {
 
   markUsed(ticket: Ticket) {
     this.eventsService.markTicketUsed(this.eventId, ticket.id).catch(e => console.error(e));
+  }
+
+  async confirmDelete() {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Eliminar',
+          cssClass: 'danger',
+          handler: () => {
+            this.performDelete();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  private async performDelete() {
+    try {
+      await this.eventsService.deleteEvent(this.eventId);
+      const toast = await this.toastController.create({ message: 'Evento eliminado', duration: 2000, color: 'success' });
+      await toast.present();
+      // Volver al listado de eventos del organizador
+      this.navCtrl.navigateRoot('/organizer-panel/my-event');
+    } catch (err) {
+      console.error(err);
+      const toast = await this.toastController.create({ message: 'Error al eliminar evento', duration: 3000, color: 'danger' });
+      await toast.present();
+    }
   }
 }

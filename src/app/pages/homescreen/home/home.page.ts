@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { EventsService } from '../../../shared/services/events.service';
 import { Event } from '../../../interfaces/event';
 import { Observable } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { EventPreviewModalComponent } from './preview/event-preview-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,7 @@ import { Observable } from 'rxjs';
 export class HomePage implements OnInit {
   events$!: Observable<Event[]>;
 
-  constructor(private eventsService: EventsService) { }
+  constructor(private eventsService: EventsService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.events$ = this.eventsService.getAllEvents();
@@ -31,6 +33,14 @@ export class HomePage implements OnInit {
     };
     
     return dateObj.toLocaleDateString('es-ES', options);
+  }
+
+  async openEventPreview(event: Event) {
+    const modal = await this.modalCtrl.create({
+      component: EventPreviewModalComponent,
+      componentProps: { event }
+    });
+    await modal.present();
   }
 
   getEventPrice(event: Event): string {
