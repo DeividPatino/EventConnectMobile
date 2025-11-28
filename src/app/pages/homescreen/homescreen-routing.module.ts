@@ -28,7 +28,11 @@ const routes: Routes = [
         pathMatch: 'full'
       }
     ]
+  },  {
+    path: 'entradas',
+    loadChildren: () => import('./entradas/entradas.module').then( m => m.EntradasPageModule)
   }
+
 ];
 
 @NgModule({

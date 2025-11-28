@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
   },
   {
+    path: 'checkout/:eventId/:zoneId',
+    loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutPageModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },

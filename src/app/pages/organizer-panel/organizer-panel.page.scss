@@ -1,0 +1,86 @@
+:host {
+  display: block;
+}
+
+ion-content {
+  --background: var(--app-bg);
+  background: var(--app-bg) !important;
+}
+
+/* Tab bar local para organizer-panel */
+ion-tab-bar {
+  background: var(--app-surface) !important;
+  border-top: 1px solid var(--card-border) !important;
+  box-shadow: 0 -10px 30px rgba(var(--ion-color-primary-rgb), 0.04);
+  padding: 6px 10px;
+  height: 64px;
+}
+
+ion-tab-button {
+  background: transparent !important;
+  --background: transparent !important;
+  color: var(--text-muted);
+  --ripple-color: rgba(var(--ion-color-primary-rgb),0.06);
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+
+ion-tab-button ion-icon { font-size: 20px; }
+ion-tab-button ion-label { font-weight: 600; font-size: 12px; color: var(--text-muted); }
+
+ion-tab-button.ion-selected, ion-tab-button[aria-selected="true"] {
+  color: var(--primary) !important;
+}
+ion-tab-button.ion-selected::part(native), ion-tab-button[aria-selected="true"]::part(native) {
+  background: rgba(var(--ion-color-primary-rgb), 0.06) !important;
+  border-radius: 10px !important;
+}
+
+/* Cards and surface elements used in organizer panel */
+ion-card {
+  background: var(--app-surface) !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--surface-elev-shadow) !important;
+  overflow: hidden;
+}
+
+ion-card-header {
+  background: linear-gradient(90deg, rgba(var(--ion-color-primary-rgb),0.03), rgba(var(--ion-color-primary-rgb),0.01));
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+ion-card-title { color: var(--text-primary) !important; font-weight: 700; }
+ion-card-subtitle { color: var(--text-muted) !important; }
+
+/* Lists, items and form controls */
+ion-list, ion-item {
+  --background: transparent;
+  border-radius: 10px;
+}
+
+ion-input::part(native), ion-textarea::part(native), input, textarea {
+  color: var(--input-text) !important;
+  background: var(--input-bg) !important;
+  caret-color: var(--input-caret) !important;
+}
+
+/* Buttons inside organizer panel */
+ion-button[color="primary"] {
+  --background: var(--primary);
+  --background-focused: var(--primary-dark);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+ion-button[fill="clear"] ion-icon { color: var(--primary) !important; }
+
+/* Responsive tweaks */
+@media (max-width: 700px) {
+  ion-tab-button ion-label { display: block; }
+  ion-tab-bar { height: 58px; }
+}

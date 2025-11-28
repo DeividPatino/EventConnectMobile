@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" fill="clear">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Seleccionar zona</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="map-area">
+    <img *ngIf="getMapUrl(); else placeholder" [src]="getMapUrl()" alt="mapa" />
+    <ng-template #placeholder>
+      <div class="map-placeholder">Mapa del estadio</div>
+    </ng-template>
+  </div>
+
+  <div class="zones" *ngIf="zones.length; else noZones">
+    <h3>Zonas disponibles</h3>
+      <ion-list>
+      <ion-radio-group [(ngModel)]="selectedZoneId">
+        <ion-item *ngFor="let z of zones">
+          <ion-radio slot="start" [value]="z.id" [disabled]="isSoldOut(z)"></ion-radio>
+          <ion-label>
+            <div class="zone-name">{{ z.name }}</div>
+            <div class="zone-desc">Boletas restantes: {{ remaining(z) }}</div>
+          </ion-label>
+          <div class="zone-price">
+            <ng-container *ngIf="!isSoldOut(z); else soldOut">
+              {{ z.price | currency:'COP':'symbol':'1.0-0' }}
+            </ng-container>
+            <ng-template #soldOut>
+              <span class="sold-out">Agotada</span>
+            </ng-template>
+          </div>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </div>
+  <ng-template #noZones>
+    <div class="zones">
+      <h3>Zonas</h3>
+      <p class="zone-desc">No hay zonas configuradas para este evento.</p>
+    </div>
+  </ng-template>
+
+  <div class="actions">
+    <ion-button expand="block" color="primary" (click)="confirmSelection()" [disabled]="!selectedZoneId || selectedZoneRemaining===0">Continuar</ion-button>
+  </div>
+</ion-content>

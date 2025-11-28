@@ -1,5 +1,5 @@
 export interface EventCity { id: string; name: string; }
-export interface EventStadium { name: string; capacity: number; }
+export interface EventStadium { name: string; capacity: number; mapBase64?: string; zones?: { id?: string; name: string; capacity: number; price?: number }[]; }
 
 export interface Event {
   id: string;
