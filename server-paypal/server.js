@@ -8,15 +8,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configuración PayPal (sandbox o live)
+// CORRECCIÓN: modo sandbox REAL
 const environment =
-  process.env.PAYPAL_MODE === "live"
-    ? new paypal.core.LiveEnvironment(process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_SECRET)
-    : new paypal.core.SandboxEnvironment(process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_SECRET);
+  process.env.PAYPAL_MODE === "sandbox"
+    ? new paypal.core.SandboxEnvironment(
+        process.env.PAYPAL_CLIENT_ID,
+        process.env.PAYPAL_SECRET
+      )
+    : new paypal.core.LiveEnvironment(
+        process.env.PAYPAL_CLIENT_ID,
+        process.env.PAYPAL_SECRET
+      );
 
 const client = new paypal.core.PayPalHttpClient(environment);
 
-// Ruta prueba
+// TEST
 app.get("/", (req, res) => res.send("Servidor PayPal OK 🚀"));
 
 // Crear orden
