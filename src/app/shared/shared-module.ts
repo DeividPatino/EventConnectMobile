@@ -10,6 +10,7 @@ import { TabComponent } from './components/tab/tab.component';
 import { HeaderComponent } from './components/header/header.component';
 import { OrganizerDetailComponent } from './components/organizer-detail/organizer-detail.component';
 import { EventPreviewModalComponent } from '../pages/homescreen/home/preview/event-preview-modal.component';
+import { EventCardComponent } from './components/event-card/event-card.component';
 
 
 const modules = [
@@ -27,7 +28,8 @@ const components = [
   TabComponent,
   HeaderComponent
   ,
-  EventPreviewModalComponent
+  EventPreviewModalComponent,
+  EventCardComponent
   
 ];
 

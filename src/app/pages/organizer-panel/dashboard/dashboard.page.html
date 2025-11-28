@@ -1,7 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-title>Dashboard</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="activo">
+        <ion-label>Activos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="finalizado">
+        <ion-label>Finalizados</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -18,22 +29,49 @@
     <ion-card *ngIf="error">
       <ion-card-content>{{ error }}</ion-card-content>
     </ion-card>
-    <ion-list *ngIf="events.length; else emptyTpl">
-      <ion-item *ngFor="let ev of events" [routerLink]="['/organizer-panel/event-stats', ev.id]">
-        <ion-label>
-          <h2>{{ ev.name }}</h2>
-          <p>{{ ev.date | date:'mediumDate' }}</p>
-        </ion-label>
-        <ion-button fill="outline" size="small" color="primary" [routerLink]="['/organizer-panel/event-stats', ev.id]">Estadísticas</ion-button>
-      </ion-item>
-    </ion-list>
+
+    <!-- Lista de Activos -->
+    <ng-container *ngIf="segment === 'activo'">
+      <ion-list *ngIf="activeEvents.length; else emptyActiveTpl">
+        <ion-item *ngFor="let ev of activeEvents" [routerLink]="['/organizer-panel/event-stats', ev.id]">
+          <ion-label>
+            <h2>{{ ev.name }}</h2>
+            <p>{{ ev.date | date:'mediumDate' }}</p>
+          </ion-label>
+          <ion-button fill="outline" size="small" color="primary" [routerLink]="['/organizer-panel/event-stats', ev.id]">Estadísticas</ion-button>
+        </ion-item>
+      </ion-list>
+      <ng-template #emptyActiveTpl>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Sin eventos activos</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>Crea o activa un evento para verlo aquí.</ion-card-content>
+        </ion-card>
+      </ng-template>
+    </ng-container>
+
+    <!-- Lista de Finalizados -->
+    <ng-container *ngIf="segment === 'finalizado'">
+      <ion-list *ngIf="finishedEvents.length; else emptyFinishedTpl">
+        <ion-item *ngFor="let ev of finishedEvents" [routerLink]="['/organizer-panel/event-stats', ev.id]">
+          <ion-label>
+            <h2>{{ ev.name }}</h2>
+            <p>{{ ev.date | date:'mediumDate' }}</p>
+          </ion-label>
+          <ion-button fill="outline" size="small" color="primary" [routerLink]="['/organizer-panel/event-stats', ev.id]">Estadísticas</ion-button>
+        </ion-item>
+      </ion-list>
+      <ng-template #emptyFinishedTpl>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Sin eventos finalizados</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>Cuando cierres un evento aparecerá aquí.</ion-card-content>
+        </ion-card>
+      </ng-template>
+    </ng-container>
+
   </ng-template>
-  <ng-template #emptyTpl>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Sin eventos</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>Crea tu primer evento para ver estadísticas.</ion-card-content>
-    </ion-card>
-  </ng-template>
+
 </ion-content>

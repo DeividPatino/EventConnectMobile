@@ -33,7 +33,8 @@ export class ListPage implements OnInit {
         cityData['Stadiums'].forEach((stadium: any) => {
           allStadiums.push({
             ...stadium,
-            City: cityData['Name'] || docSnap.id
+            City: cityData['Name'] || docSnap.id,
+            CityId: docSnap.id
           });
         });
       }
@@ -60,17 +61,26 @@ export class ListPage implements OnInit {
 
   async deleteStadium(stadium: any) {
     try {
-      const cityRef = doc(this.firestore, `cities/${stadium.City}`);
+      const cityId = stadium.CityId || stadium.City;
+      const cityRef = doc(this.firestore, `cities/${cityId}`);
       const snapshot = await getDoc(cityRef);
       if (!snapshot.exists()) {
         await this.toastCtrl.create({ message: 'Ciudad no encontrada', duration: 2000, color: 'danger' }).then(t => t.present());
         return;
       }
       const data: any = snapshot.data();
-      const stadiums: any[] = Array.isArray(data.Stadiums) ? data.Stadiums : [];
+      const hasUpper = Array.isArray(data.Stadiums);
+      const hasLower = Array.isArray(data.stadiums);
+      const currentStadiums: any[] = hasUpper ? data.Stadiums : (hasLower ? data.stadiums : []);
       // Filtrar el estadio a eliminar: comparamos por Nombre + Capacity + MapBase64 como heurística
-      const filtered = stadiums.filter(s => !(s.Name === stadium.Name && Number(s.Capacity) === Number(stadium.Capacity) && (s.MapBase64 || '') === (stadium.MapBase64 || '')));
-      await updateDoc(cityRef, { Stadiums: filtered });
+      const filtered = currentStadiums.filter(s => {
+        const sName = s.Name ?? s.name;
+        const sCap = Number(s.Capacity ?? s.capacity ?? 0);
+        const sMap = s.MapBase64 ?? s.mapBase64 ?? '';
+        return !(sName === stadium.Name && sCap === Number(stadium.Capacity) && (sMap || '') === (stadium.MapBase64 || ''));
+      });
+      const payload = hasUpper ? { Stadiums: filtered } : (hasLower ? { stadiums: filtered } : { Stadiums: filtered });
+      await updateDoc(cityRef, payload);
       await this.toastCtrl.create({ message: 'Estadio eliminado', duration: 2000, color: 'success' }).then(t => t.present());
       await this.loadStadiums();
     } catch (e) {

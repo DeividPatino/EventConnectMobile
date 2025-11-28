@@ -73,7 +73,7 @@
       <ng-container *ngSwitchCase="'events'">
         <h2 class="section-title">Eventos Publicados ({{ events.length }})</h2>
         <div *ngIf="events.length; else noEvents" class="cards-container">
-          <app-card *ngFor="let event of events" [data]="event"></app-card>
+          <app-event-card *ngFor="let event of events" [event]="event"></app-event-card>
         </div>
         <ng-template #noEvents><p>No hay eventos publicados.</p></ng-template>
       </ng-container>

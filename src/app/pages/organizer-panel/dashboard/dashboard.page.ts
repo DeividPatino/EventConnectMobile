@@ -11,8 +11,11 @@ import { Event } from '../../../interfaces/event';
 })
 export class DashboardPage implements OnInit {
   events: Event[] = [];
+  activeEvents: Event[] = [];
+  finishedEvents: Event[] = [];
   loading = true;
   error: string | null = null;
+  segment: 'activo' | 'finalizado' = 'activo';
 
   constructor(private eventsService: EventsService, private auth: Auth) { }
 
@@ -20,7 +23,12 @@ export class DashboardPage implements OnInit {
     const uid = (this.auth.getUser() as any)?.uid;
     if (!uid) { this.loading = false; this.error = 'No UID de organizador.'; return; }
     this.eventsService.getOrganizerEvents(uid).subscribe({
-      next: evs => { this.events = evs; this.loading = false; },
+      next: evs => {
+        this.events = evs;
+        this.activeEvents = evs.filter(e => e.status === 'activo');
+        this.finishedEvents = evs.filter(e => e.status === 'finalizado');
+        this.loading = false;
+      },
       error: err => { this.error = 'Error cargando eventos'; this.loading = false; console.error(err); }
     });
   }

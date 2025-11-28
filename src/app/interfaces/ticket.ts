@@ -9,4 +9,5 @@ export interface Ticket {
 
   eventName?: string;
   eventImage?: string | null;
+  zoneName?: string; // añadido para mostrar nombre de zona en UI
 }

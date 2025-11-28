@@ -370,10 +370,54 @@ export class NewEventPage implements OnInit {
   }
 
   // Helper: convierte File a Base64 DataURL
-  private fileToBase64(file: File): Promise<string> {
+  private async fileToBase64(file: File): Promise<string> {
+    // Si el archivo es pequeño (< 300KB) devolver directamente
+    const sizeKB = file.size / 1024;
+    if (sizeKB < 300) {
+      return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    // Comprimir usando canvas para evitar exceder límites de documento Firestore
+    return await this.compressImage(file, 1000, 1000, 0.8);
+  }
+
+  private compressImage(file: File, maxW: number, maxH: number, quality: number): Promise<string> {
     return new Promise((resolve, reject) => {
+      const img = new Image();
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
+      reader.onload = () => {
+        img.onload = () => {
+          let { width, height } = img;
+          // Redimensionar manteniendo proporción
+          const ratio = Math.min(maxW / width, maxH / height, 1);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject('No canvas context');
+            return;
+          }
+            ctx.drawImage(img, 0, 0, width, height);
+          try {
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          } catch (e) {
+            reject(e);
+          }
+        };
+        if (typeof reader.result === 'string') {
+          img.src = reader.result;
+        } else {
+          reject('Reader result not string');
+        }
+      };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });

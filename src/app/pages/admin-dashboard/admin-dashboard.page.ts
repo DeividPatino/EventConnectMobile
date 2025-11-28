@@ -47,9 +47,16 @@ export class AdminDashboardPage implements OnInit {
 
   async loadEvents() {
     try {
-      const ref = collection(this.firestore, 'events');
-      const snapshot = await getDocs(ref);
-      this.events = snapshot.docs.map(doc => doc.data());
+      const refPlural = collection(this.firestore, 'events');
+      const snapPlural = await getDocs(refPlural);
+      let events = snapPlural.docs.map(d => ({ id: d.id, ...(d.data() as any) }));
+      // Fallback a colección singular si no hay resultados (por configuración previa)
+      if (!events.length) {
+        const refSingular = collection(this.firestore, 'event');
+        const snapSingular = await getDocs(refSingular);
+        events = snapSingular.docs.map(d => ({ id: d.id, ...(d.data() as any) }));
+      }
+      this.events = events;
       console.log('Eventos cargados:', this.events);
     } catch (error) {
       console.error('Error al cargar eventos:', error);

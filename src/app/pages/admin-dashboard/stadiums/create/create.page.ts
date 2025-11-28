@@ -119,13 +119,12 @@ export class CreatePage implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64 = reader.result as string;
+    this.readAndMaybeCompress(file).then((base64: string) => {
       this.form.patchValue({ mapBase64: base64 });
       this.mapPreview = base64;
-    };
-    reader.readAsDataURL(file);
+    }).catch(() => {
+      this.presentToast('Error al procesar imagen', 'danger');
+    });
   }
 
   addZone(): void {
@@ -245,4 +244,46 @@ export class CreatePage implements OnInit {
     const t = await this.toastCtrl.create({ message, duration: 2200, color });
     await t.present();
   }
+
+  // Añadido: decide si comprime según tamaño
+  private readAndMaybeCompress(file: File): Promise<string> {
+    const sizeKB = file.size / 1024;
+    if (sizeKB < 300) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    return compressImageFile(file, 1000, 1000, 0.8);
+  }
+}
+
+// Utilidad simple fuera de la clase (evitar recrear lógica) — podría moverse a servicio si se reutiliza
+function compressImageFile(file: File, maxW: number, maxH: number, quality: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = () => {
+      img.onload = () => {
+        let { width, height } = img;
+        const ratio = Math.min(maxW / width, maxH / height, 1);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject('No context'); return; }
+        ctx.drawImage(img, 0, 0, width, height);
+        try {
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        } catch (e) { reject(e); }
+      };
+      if (typeof reader.result === 'string') img.src = reader.result; else reject('Result not string');
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
