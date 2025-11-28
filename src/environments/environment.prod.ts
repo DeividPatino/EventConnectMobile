@@ -2,7 +2,7 @@
 
 export const environment = {
   production: true,
-   baseUrl: 'http://localhost:3000/api/chat',
+   baseUrl: ' https://eventconnectmobile-1.onrender.com',
     
    SUPA_BASE:{
   supaBaseUrl: "https://rnwbmijinlfcxloobout.supabase.co",

@@ -8,7 +8,7 @@ import { FirebaseApp } from "@angular/fire/app";
 
 export const environment = {
   production: false,
-   baseUrl: 'http://localhost:3000/api/chat',
+   baseUrl: ' https://eventconnectmobile-1.onrender.com/api/chat',
 
    SUPA_BASE:{
   supaBaseUrl: "https://rnwbmijinlfcxloobout.supabase.co",
