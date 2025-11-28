@@ -1,0 +1,92 @@
+.bg-light {
+  background: #f7f7f7;
+}
+
+/* Contenedor general */
+.tickets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ticket estilizado */
+.ticket {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+/* IMAGEN BONITA */
+.ticket-image {
+  width: 100%;
+  height: 180px;
+  background: #e8e8e8;
+  overflow: hidden;
+}
+
+.ticket-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* La clave: imagen perfecta, sin deformarse */
+}
+
+/* BODY */
+.ticket-body {
+  padding: 16px;
+}
+
+.ticket-body h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.event-id {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #777;
+}
+
+.info-group {
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+/* Estados */
+span.active {
+  color: #0bb700;
+  font-weight: bold;
+}
+
+span.used {
+  color: #ffae00;
+  font-weight: bold;
+}
+
+span.canceled {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+/* Línea perforada */
+.ticket-cut {
+  width: 100%;
+  height: 10px;
+  background-image: radial-gradient(circle, #aaa 2px, transparent 2px);
+  background-size: 10px 10px;
+  background-repeat: repeat-x;
+  margin-top: 12px;
+}
+
+/* Center */
+.center {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.empty ion-icon {
+  font-size: 80px;
+  color: #999;
+}

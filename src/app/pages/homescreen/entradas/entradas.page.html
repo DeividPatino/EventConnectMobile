@@ -1,13 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>entradas</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mis Entradas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">entradas</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding bg-light">
+
+  <!-- Loading -->
+  <ng-container *ngIf="loading">
+    <div class="center">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando tus entradas...</p>
+    </div>
+  </ng-container>
+
+  <!-- Cuando no hay tickets -->
+  <ng-container *ngIf="!loading && tickets.length === 0">
+    <div class="center empty">
+      <ion-icon name="ticket-outline" size="large"></ion-icon>
+      <h3>No tienes entradas todavía</h3>
+      <p>Cuando compres una entrada aparecerá aquí.</p>
+    </div>
+  </ng-container>
+
+  <!-- TICKETS -->
+  <div class="tickets-container">
+    <div class="ticket" *ngFor="let t of tickets">
+
+      <!-- Imagen del evento -->
+      <div class="ticket-image">
+        <img [src]="t.eventImage" alt="Evento" />
+      </div>
+
+      <!-- Información -->
+      <div class="ticket-body">
+        <h2>{{ t.eventName }}</h2>
+        <p class="event-id">Evento ID: {{ t.eventId }}</p>
+
+        <div class="info-group">
+          <strong>Código:</strong> {{ t.id }}
+        </div>
+
+        <div class="info-group">
+          <strong>Zona:</strong> {{ t.zoneId }}
+        </div>
+
+        <div class="info-group">
+          <strong>Estado:</strong>
+          <span [ngClass]="t.status">{{ t.status }}</span>
+        </div>
+
+        <div class="info-group">
+          <strong>Fecha Compra:</strong>
+          {{ t.purchaseDate?.toDate ? t.purchaseDate.toDate() : t.purchaseDate }}
+        </div>
+      </div>
+
+      <!-- Línea perforada -->
+      <div class="ticket-cut"></div>
+
+    </div>
+  </div>
+
 </ion-content>
