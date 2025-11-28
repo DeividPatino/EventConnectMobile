@@ -31,7 +31,12 @@
     </div>
 
     <div class="actions">
-      <ion-button expand="block" color="primary" (click)="openTicketMap()">Conseguir boletos</ion-button>
+      <ng-container *ngIf="loggedIn; else loginPrompt">
+        <ion-button expand="block" color="primary" (click)="openTicketMap()">Conseguir boletos</ion-button>
+      </ng-container>
+      <ng-template #loginPrompt>
+        <ion-button expand="block" color="medium" disabled>Inicia sesión para comprar boletos</ion-button>
+      </ng-template>
     </div>
   </div>
 </ion-content>

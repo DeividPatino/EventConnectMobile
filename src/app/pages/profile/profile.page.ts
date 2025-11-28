@@ -12,7 +12,7 @@ import { User } from 'src/app/interfaces/user';
 export class ProfilePage implements OnInit {
   user: User | null = null;
 
-  // 🔽 Variables para mostrar mensajes
+  
   showHelp = false;
   showTerms = false;
   showPrivacy = false;
@@ -46,7 +46,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  // 🔽 Funciones para abrir/cerrar mensajes
+  
   toggleHelp() {
     this.showHelp = !this.showHelp;
   }

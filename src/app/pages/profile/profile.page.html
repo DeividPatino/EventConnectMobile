@@ -48,7 +48,7 @@
         <div *ngIf="showHelp" class="info-box">
           <p>Si tienes problemas con la app, escríbenos:</p>
           <p>
-            📧 <a href="mailto:soporte@eventconnect.com">soporteeventconnect@gmail.com</a>
+            📧 <a href="mailto:soporteeventconnect@gmail.com">soporteeventconnect@gmail.com</a>
           </p>
           <p>
             📱 WhatsApp:  
@@ -85,8 +85,6 @@
       </div>
     </ng-container>
 
-
-    <!-- 🔹 PARTE SIN LOGIN -->
     <ng-template #loggedOut>
       <h1>Inicia sesión para encontrar cosas divertidas que hacer</h1>
       <p>Obtén mejores recomendaciones, conéctate y descubre nuevos eventos.</p>
@@ -98,7 +96,7 @@
       <div class="extra-section">
         <h3>Ayuda</h3>
 
-        <!-- ⭐ Centro de ayuda -->
+    
         <ion-item lines="none" (click)="toggleHelp()">
           <ion-icon name="help-circle-outline" slot="start"></ion-icon>
           <ion-label>Centro de ayuda</ion-label>
@@ -107,17 +105,17 @@
         <div *ngIf="showHelp" class="info-box">
           <p>Si tienes problemas con la app, escríbenos:</p>
           <p>
-            📧 <a href="mailto:soporte@eventconnect.com">soporteeventconnect@gmail.com</a>
+             <a href="mailto:soporte@eventconnect.com">soporteeventconnect@gmail.com</a>
           </p>
           <p>
-            📱 WhatsApp:  
+             WhatsApp:  
             <a href="https://wa.me/573023608602" target="_blank">302 360 8602</a>
           </p>
         </div>
 
         <h3>Legal</h3>
 
-        <!-- ⭐ Términos del servicio -->
+        
         <ion-item lines="none" (click)="toggleTerms()">
           <ion-icon name="document-outline" slot="start"></ion-icon>
           <ion-label>Términos del servicio</ion-label>
@@ -129,7 +127,6 @@
           </p>
         </div>
 
-        <!-- ⭐ Privacidad -->
         <ion-item lines="none" (click)="togglePrivacy()">
           <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
           <ion-label>Privacidad</ion-label>

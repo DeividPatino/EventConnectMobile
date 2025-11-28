@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Event } from '../../../../interfaces/event';
+import { Auth } from '../../../../core/providers/auth';
 
 @Component({
   selector: 'app-event-preview-modal',
@@ -11,7 +12,7 @@ import { Event } from '../../../../interfaces/event';
 export class EventPreviewModalComponent {
   @Input() event!: Event;
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController, private auth: Auth) {}
 
   close() {
     this.modalCtrl.dismiss();
@@ -39,5 +40,9 @@ export class EventPreviewModalComponent {
       // por ahora solo loguear, podrías navegar a compra
       console.log('Zona seleccionada:', data.zone);
     }
+  }
+
+  get loggedIn(): boolean {
+    return !!this.auth.getUser();
   }
 }
