@@ -20,7 +20,12 @@ export class ProfilePage implements OnInit {
   constructor(private navCtrl: NavController, private auth: Auth) {}
 
   ngOnInit() {
-    this.user = this.auth.getUser();
+    const current = this.auth.getUser();
+    if (current && 'firstName' in current) {
+      this.user = current as User;
+    } else {
+      this.user = null;
+    }
   }
 
   goToLogin() {

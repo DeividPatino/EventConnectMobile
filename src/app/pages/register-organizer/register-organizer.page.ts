@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from 'src/app/core/providers/auth';
+import { NavController } from '@ionic/angular';
 import { Organizer } from 'src/app/interfaces/organizer';
 import { NgForm } from '@angular/forms';
 
@@ -43,7 +44,7 @@ export class RegisterOrganizerPage implements OnInit {
   previewLogo: string | null = null;
   logoFile: File | null = null;
 
-  constructor(private auth: Auth) { }
+  constructor(private auth: Auth, private navCtrl: NavController) { }
 
   ngOnInit() {
   }
@@ -79,8 +80,21 @@ export class RegisterOrganizerPage implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.previewLogo = reader.result as string;
+      // Persist the preview (base64 Data URL) into organizer.logo so it goes to Firestore
+      // even if Storage upload is not configured/available.
+      this.organizer.logo = this.previewLogo;
     };
     reader.readAsDataURL(file);
+  }
+
+  goBack() {
+    // Navigate back to previous page in the stack
+    try {
+      this.navCtrl.back();
+    } catch (err) {
+      // Fallback: browser history
+      window.history.back();
+    }
   }
 
 }

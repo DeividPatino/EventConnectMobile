@@ -51,6 +51,16 @@ export class MyEventPage implements OnInit {
     console.log('Editar evento', eventId);
   }
 
+  async finalizeEvent(eventId: string) {
+    try {
+      await this.eventsService.setEventStatus(eventId, 'finalizado');
+      // update local list optimistically
+      this.myEvents = this.myEvents.map(ev => ev.id === eventId ? { ...ev, status: 'finalizado' } as any : ev);
+    } catch (err) {
+      console.error('Error finalizando evento', err);
+    }
+  }
+
   viewSales(eventId: string) {
     // Placeholder for future sales page
     console.log('Ver ventas evento', eventId);

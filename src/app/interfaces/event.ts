@@ -16,4 +16,5 @@ export interface Event {
   organizerUid: string;
   zonesCount?: number; // optional aggregated field
   ticketsSold?: number; // optional aggregated field
+  status?: 'activo' | 'finalizado' | 'inhabilitado';
 }

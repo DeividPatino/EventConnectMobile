@@ -1,6 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>register-organizer</ion-title>
+    <ion-buttons slot="start" *ngIf="step === 1">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +12,11 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">register-organizer</ion-title>
+      <ion-buttons slot="start" *ngIf="step === 1">
+        <ion-button fill="clear" (click)="goBack()">
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <!-- New multi-step organizer registration -->
@@ -78,9 +86,8 @@
                   <ion-select name="category" [(ngModel)]="organizer.category">
                     <ion-select-option value="conciertos">Conciertos</ion-select-option>
                     <ion-select-option value="festivales">Festivales</ion-select-option>
-                    <ion-select-option value="corporativos">Eventos corporativos</ion-select-option>
-                    <ion-select-option value="sociales">Eventos sociales</ion-select-option>
-                    <ion-select-option value="deportivos">Eventos deportivos</ion-select-option>
+                    <ion-select-option value="sociales">Sociales</ion-select-option>
+                    <ion-select-option value="deportivos">Deportivos</ion-select-option>
                   </ion-select>
                 </ion-item>
 
@@ -92,17 +99,41 @@
                 <ion-item>
                   <ion-label position="stacked">Ciudad</ion-label>
                   <ion-select name="city" [(ngModel)]="organizer.city">
-                    <ion-select-option value="cartagena">Cartagena</ion-select-option>
-                    <ion-select-option value="barranquilla">Barranquilla</ion-select-option>
                     <ion-select-option value="bogota">Bogotá</ion-select-option>
                     <ion-select-option value="medellin">Medellín</ion-select-option>
                     <ion-select-option value="cali">Cali</ion-select-option>
+                    <ion-select-option value="barranquilla">Barranquilla</ion-select-option>
+                    <ion-select-option value="cartagena">Cartagena</ion-select-option>
+                    <ion-select-option value="cucuta">Cúcuta</ion-select-option>
+                    <ion-select-option value="bucaramanga">Bucaramanga</ion-select-option>
+                    <ion-select-option value="pereira">Pereira</ion-select-option>
+                    <ion-select-option value="santamarta">Santa Marta</ion-select-option>
+                    <ion-select-option value="ibague">Ibagué</ion-select-option>
+                    <ion-select-option value="villavicencio">Villavicencio</ion-select-option>
+                    <ion-select-option value="manizales">Manizales</ion-select-option>
+                    <ion-select-option value="neiva">Neiva</ion-select-option>
+                    <ion-select-option value="pasto">Pasto</ion-select-option>
+                    <ion-select-option value="monteria">Montería</ion-select-option>
+                    <ion-select-option value="armenia">Armenia</ion-select-option>
+                    <ion-select-option value="popayan">Popayán</ion-select-option>
+                    <ion-select-option value="valledupar">Valledupar</ion-select-option>
+                    <ion-select-option value="sincelejo">Sincelejo</ion-select-option>
+                    <ion-select-option value="tunja">Tunja</ion-select-option>
+                    <ion-select-option value="riohacha">Riohacha</ion-select-option>
+                    <ion-select-option value="yopal">Yopal</ion-select-option>
+                    <ion-select-option value="leticia">Leticia</ion-select-option>
+                    <ion-select-option value="mocoa">Mocoa</ion-select-option>
+                    <ion-select-option value="quibdo">Quibdó</ion-select-option>
+                    <ion-select-option value="arauca">Arauca</ion-select-option>
+                    <ion-select-option value="florencia">Florencia</ion-select-option>
+                    <ion-select-option value="san_andres">San Andrés</ion-select-option>
                   </ion-select>
                 </ion-item>
 
                 <ion-item>
                   <ion-label position="stacked">Descripción de la empresa</ion-label>
-                  <ion-textarea name="description" [(ngModel)]="organizer.description" placeholder="Cuéntanos sobre tu empresa o los eventos que organizas..."></ion-textarea>
+                  <ion-textarea name="description" [(ngModel)]="organizer.description"
+                    placeholder="Cuéntanos sobre tu empresa o los eventos que organizas..."></ion-textarea>
                 </ion-item>
 
                 <ion-button expand="block" color="light" (click)="prev()">Anterior</ion-button>

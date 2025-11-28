@@ -18,6 +18,11 @@ const routes: Routes = [
           import('./categories/categories.module').then(m => m.CategoriesPageModule)
       },
       {
+        path: 'entradas',
+        loadChildren: () => 
+          import('./entradas/entradas.module').then( m => m.EntradasPageModule)
+      },
+      {
         path: 'notifications',
         loadChildren: () =>
           import('./notifications/notifications.module').then(m => m.NotificationsPageModule)
@@ -28,10 +33,7 @@ const routes: Routes = [
         pathMatch: 'full'
       }
     ]
-  },  {
-    path: 'entradas',
-    loadChildren: () => import('./entradas/entradas.module').then( m => m.EntradasPageModule)
-  }
+  },
 
 ];
 

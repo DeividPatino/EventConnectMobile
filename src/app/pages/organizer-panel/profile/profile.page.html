@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mi perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="organizer; else noProfile">
+    <div class="profile-card">
+      <ion-card>
+        <ion-card-content class="card-content">
+          <div class="avatar-row">
+            <img [src]="organizer.logo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'" alt="logo" />
+            <div class="meta">
+              <h2>{{ organizer.companyName }}</h2>
+              <p class="subtitle">{{ organizer.eventsCount || 0 }} Eventos creados</p>
+            </div>
+          </div>
+
+          <ion-button expand="block" color="danger" (click)="logout()">CERRAR SESIÓN</ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <div class="sections">
+        
+        <h3>Ayuda</h3>
+        <ion-list>
+          <ion-item lines="none" (click)="toggleHelp()">
+            <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+            <ion-label>Centro de ayuda</ion-label>
+          </ion-item>
+
+          <div *ngIf="showHelp" class="info-box">
+            <p>Si tienes problemas con la app, escríbenos:</p>
+            <p>📧 <a href="mailto:soporte@eventconnect.com">soporteeventconnect@gmail.com</a></p>
+            <p>📱 WhatsApp: <a href="https://wa.me/573023608602" target="_blank">302 360 8602</a></p>
+          </div>
+        </ion-list>
+
+        <h3>Legal</h3>
+        <ion-list>
+          <ion-item lines="none" (click)="toggleTerms()">
+            <ion-icon name="document-outline" slot="start"></ion-icon>
+            <ion-label>Términos del servicio</ion-label>
+          </ion-item>
+
+          <div *ngIf="showTerms" class="info-box">
+            <p>
+              Los términos del servicio de EventConnect indican que el uso de la plataforma implica aceptar nuestras políticas, reglas y condiciones del sistema.
+            </p>
+          </div>
+
+          <ion-item lines="none" (click)="togglePrivacy()">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-label>Privacidad</ion-label>
+          </ion-item>
+
+          <div *ngIf="showPrivacy" class="info-box">
+            <p>
+              Tu información es protegida y solo se usa para mejorar tu experiencia en la app. Nunca compartimos tus datos sin permiso.
+            </p>
+          </div>
+        </ion-list>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noProfile>
+    <div class="ion-padding">
+      <p>No hay datos de organizer cargados. Asegúrate de iniciar sesión con una cuenta de organizer.</p>
+    </div>
+  </ng-template>
+</ion-content>

@@ -36,8 +36,7 @@
         </ion-card-content>
         <ion-item lines="none">
           <ion-button fill="outline" size="small" (click)="viewDetails(ev.id)">Ver detalles</ion-button>
-          <ion-button fill="outline" size="small" color="warning" (click)="editEvent(ev.id)">Editar</ion-button>
-          <ion-button fill="outline" size="small" color="tertiary" (click)="viewSales(ev.id)">Ventas</ion-button>
+          <ion-button fill="outline" size="small" color="warning" (click)="finalizeEvent(ev.id)" [disabled]="ev.status==='finalizado'">Finalizar evento</ion-button>
         </ion-item>
       </ion-card>
     </ng-container>

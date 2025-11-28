@@ -280,6 +280,7 @@ export class NewEventPage implements OnInit {
         image: imageBase64,
         map: mapBase64,
         organizerUid: organizerUid,
+        status: 'activo',
         createdAt: serverTimestamp()
       };
 

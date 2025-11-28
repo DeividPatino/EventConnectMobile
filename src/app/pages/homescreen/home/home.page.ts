@@ -17,7 +17,8 @@ export class HomePage implements OnInit {
   constructor(private eventsService: EventsService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.events$ = this.eventsService.getAllEvents();
+    // Mostrar solo eventos visibles: sin status o con status 'activo'
+    this.events$ = this.eventsService.getAllVisibleEvents();
   }
 
   formatDate(date: any): string {

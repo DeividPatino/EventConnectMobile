@@ -5,6 +5,7 @@ import { Event } from '../../../interfaces/event';
 import { Zone } from '../../../interfaces/zone';
 import { Ticket } from '../../../interfaces/ticket';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-event-details',
@@ -28,7 +29,8 @@ export class EventDetailsPage implements OnInit {
     private eventsService: EventsService,
     private alertCtrl: AlertController,
     private toastController: ToastController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private firestore: Firestore
   ) {}
 
   ngOnInit(): void {
@@ -59,10 +61,49 @@ export class EventDetailsPage implements OnInit {
     }
   }
 
-  exportCsv() {
+  async exportCsv() {
     if (!this.tickets.length) return;
-    const headers = ['id','userUid','zoneId','purchaseDate','status','code'];
-    const rows = this.tickets.map(t => [t.id, t.userUid, t.zoneId, (t.purchaseDate?.toDate ? t.purchaseDate.toDate().toISOString() : t.purchaseDate), t.status, t.code || ''].join(','));
+
+    // Gather unique user UIDs
+    const uids = Array.from(new Set(this.tickets.map(t => t.userUid).filter(Boolean)));
+    const userMap: Record<string, any> = {};
+
+    // Fetch user documents (if any) to include buyer details
+    for (const uid of uids) {
+      try {
+        const userRef = doc(this.firestore, `users/${uid}`);
+        const snap = await getDoc(userRef as any);
+        if (snap && snap.exists()) userMap[uid] = snap.data();
+      } catch (err) {
+        console.warn('Error fetching user', uid, err);
+      }
+    }
+
+    const headers = ['ticketId','userUid','firstName','lastName','email','phone','zoneId','purchaseDate','status','code'];
+
+    const escape = (v: any) => {
+      if (v === null || v === undefined) return '';
+      const s = String(v);
+      return '"' + s.replace(/"/g, '""') + '"';
+    };
+
+    const rows = this.tickets.map(t => {
+      const u = userMap[t.userUid] || {};
+      const purchaseDate = (t.purchaseDate && (t.purchaseDate as any).toDate) ? (t.purchaseDate as any).toDate().toISOString() : (t.purchaseDate || '');
+      return [
+        escape(t.id),
+        escape(t.userUid),
+        escape(u.firstName || u.name || ''),
+        escape(u.lastName || ''),
+        escape(u.email || ''),
+        escape(u.phone || u.phoneNumber || ''),
+        escape(t.zoneId),
+        escape(purchaseDate),
+        escape(t.status),
+        escape(t.code || '')
+      ].join(',');
+    });
+
     const csv = [headers.join(','), ...rows].join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -71,6 +112,9 @@ export class EventDetailsPage implements OnInit {
     a.download = `tickets_${this.eventId}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+
+    const toast = await this.toastController.create({ message: 'CSV descargado', duration: 2000, color: 'success' });
+    await toast.present();
   }
 
   cancelTicket(ticket: Ticket) {

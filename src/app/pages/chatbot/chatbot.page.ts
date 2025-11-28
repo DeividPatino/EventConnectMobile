@@ -31,10 +31,8 @@ export class ChatbotPage implements OnInit {
   ngOnInit() {
    
     const currentUser = this.auth.getUser();
-    if (currentUser) {
-      this.user = currentUser;
-
-      
+    if (currentUser && 'firstName' in currentUser) {
+      this.user = currentUser as User;
       this.addMessage('bot', `👋 ¡Hola ${this.user.firstName}! Bienvenido a EventBot. ¿En qué puedo ayudarte hoy?`);
     }
   }

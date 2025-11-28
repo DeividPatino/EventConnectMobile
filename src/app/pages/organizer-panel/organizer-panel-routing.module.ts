@@ -17,6 +17,14 @@ const routes: Routes = [
         loadChildren: () => import('./my-event/my-event.module').then( m => m.MyEventPageModule)
       },
       {
+        path: 'dashboard',
+        loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+      },
+      {
+        path: 'mi-perfil',
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
@@ -28,10 +36,6 @@ const routes: Routes = [
     loadChildren: () => import('./my-event/my-event.module').then( m => m.MyEventPageModule)
   },
   {
-    path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  }
-  ,{
     path: 'event-details/:eventId',
     loadChildren: () => import('./event-details/event-details.module').then(m => m.EventDetailsPageModule)
   }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, query, where, collectionData, docData, doc, updateDoc, getDoc, getDocs, writeBatch } from '@angular/fire/firestore';
 import { runTransaction, increment } from 'firebase/firestore';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Event } from '../../interfaces/event';
 import { Zone } from '../../interfaces/zone';
 import { Ticket } from '../../interfaces/ticket';
@@ -29,6 +30,19 @@ export class EventsService {
   getAllEvents(): Observable<Event[]> {
     const ref = collection(this.firestore, 'events');
     return collectionData(ref, { idField: 'id' }) as Observable<Event[]>;
+  }
+
+  // Retorna eventos visibles en home: incluye los que no tienen status o están 'activo'
+  getAllVisibleEvents(): Observable<Event[]> {
+    return (this.getAllEvents() as Observable<Event[]>).pipe(
+      map(events => events.filter(ev => !ev.status || ev.status === 'activo'))
+    );
+  }
+
+  // Cambia el estado de un evento
+  setEventStatus(eventId: string, status: 'activo' | 'finalizado' | 'inhabilitado'): Promise<void> {
+    const ref = doc(this.firestore, `events/${eventId}`);
+    return updateDoc(ref, { status });
   }
 
   getTickets(eventId: string): Observable<Ticket[]> {

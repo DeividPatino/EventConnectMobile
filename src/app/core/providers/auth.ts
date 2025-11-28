@@ -25,7 +25,7 @@ import { Organizer } from 'src/app/interfaces/organizer';
 })
 export class Auth {
 
-  private currentUser!: User | null;
+  private currentUser!: User | Organizer | null;
 
   constructor(
     private authFirebase: AuthFirebase,
@@ -39,12 +39,12 @@ export class Auth {
   // If you want to upload files (logo), inject Storage in constructor. We will lazy-inject if available.
 
   // ✅ Guarda temporalmente el usuario actual
-  setUser(user: User) {
+  setUser(user: User | Organizer) {
     this.currentUser = user;
   }
 
   // ✅ Devuelve el usuario actual (por ejemplo, para Chatbot)
-  getUser(): User | null {
+  getUser(): User | Organizer | null {
     return this.currentUser;
   }
 
